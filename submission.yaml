@@ -1,0 +1,30 @@
+# MindRL Challenge — submission metadata (template WSLS baseline).
+
+team:
+  team_id: template_wsls
+  display_name: Template WSLS Baseline
+  members:
+    - name: Template User
+      email: template@example.com
+      role: baseline
+
+submission:
+  visibility: internal
+  method_family: heuristic_cognitive_model
+  short_description: "A minimal Win-Stay-Lose-Shift baseline for validating the MindRL submission interface."
+  repo_url: TODO
+  commit_hash: TODO
+  agent_path: agent.py
+  config_path: config.yaml
+  requirements_path: requirements.txt
+  interpretation_card_path: interpretation_card.md
+
+artifacts:
+  hf_checkpoint: null
+  external_weights: null
+  notes: "No external artifacts are required."
+
+policy:
+  ip_owner: submitting_team
+  access_scope: challenge_internal
+  public_release_opt_in: false

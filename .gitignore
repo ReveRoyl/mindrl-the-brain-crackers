@@ -1,0 +1,10 @@
+__pycache__/
+*.pyc
+.env
+.env.*
+secrets.env
+*.log
+scores.json
+artifacts/*
+!artifacts/README.md
+.DS_Store

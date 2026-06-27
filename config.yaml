@@ -1,0 +1,13 @@
+runtime:
+  random_seed: 2026
+  device: cpu
+
+model:
+  name: wsls_baseline
+  type: cognitive_baseline
+  win_threshold: 0.5
+  stay_probability: 0.85
+  epsilon: 0.05
+
+evaluation:
+  allow_online_state_updates: true
