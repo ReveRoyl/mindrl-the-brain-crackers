@@ -19,6 +19,17 @@ submission:
   requirements_path: requirements.txt
   interpretation_card_path: interpretation_card.md
 
+
+runtime_profile:
+  execution_type: local_python
+  model_family: symbolic_cognitive
+  requires_gpu: false
+  gpu_type: null
+  requires_external_api: false
+  required_secrets: []
+  estimated_eval_cost: none
+  expected_runtime_minutes: null
+  notes: "Template WSLS runs fully inside the evaluator process on CPU."
 artifacts:
   hf_checkpoint: null
   external_weights: null

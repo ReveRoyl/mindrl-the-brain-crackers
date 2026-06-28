@@ -57,7 +57,26 @@ Parameters are fixed before evaluation; online state may update within a traject
 3. **Fill `submission.yaml`** — Replace placeholder `repo_url`, `commit_hash`, and team fields with real values before an actual submission.
 4. **Complete `interpretation_card.md`** — Replace or extend the WSLS example sections with claims and evidence for your method (the current card documents the template WSLS only).
 
-## 6. Organizer validation (`validate_submission.py`)
+## 6. Runtime profile
+
+Every submission must include a `runtime_profile` block in `submission.yaml`. The same summary is copied into the official registry entry so organizers can route evaluations before cloning the repository.
+
+```yaml
+runtime_profile:
+  execution_type: local_python        # local_python | gpu_model | external_api | hybrid
+  model_family: symbolic_cognitive    # symbolic_cognitive | neural | llm_agent | auditing | hybrid | other
+  requires_gpu: false
+  gpu_type: null
+  requires_external_api: false
+  required_secrets: []                # e.g. ["OPENAI_API_KEY"]; leave empty when none
+  estimated_eval_cost: none           # none | low | medium | high, or a short estimate
+  expected_runtime_minutes: null
+  notes: "Describe any special evaluation handling here."
+```
+
+The runtime profile does **not** change the required `Agent` API. Even LLM/API/GPU submissions must expose a callable `Agent` class. Do not commit API keys or secrets. If your approach needs external APIs, list secret names only and describe expected cost or rate limits.
+
+## 7. Organizer validation (`validate_submission.py`)
 
 Validation is performed using the **core evaluator repository**, not by running a script inside this submission repo. From the **core** repo root, a typical invocation looks like:
 
@@ -74,24 +93,25 @@ python scripts/validate_submission.py \
 
 Adjust `--data` to a **toy or public** path provided by the organizers. Do not commit private evaluation sets.
 
-## 7. How to run other local checks
+## 8. How to run other local checks
 
 If the core package exposes a runner module, you can also smoke-test the agent there (exact CLI depends on the released evaluator). Replace data paths with allowed public or toy splits only.
 
-## 8. Artifact / checkpoint guidance
+## 9. Artifact / checkpoint guidance
 
 - **Small** auxiliary files may live under `artifacts/` (see `artifacts/README.md`).
 - **Large** checkpoints belong on Hugging Face (or another organizer-approved host): record the URI in `submission.yaml` / `config.yaml` and keep this git repository small.
 - Never commit API keys, SSH private keys, or raw identifiable participant data.
 
-## 9. Visibility and confidentiality
+## 10. Visibility and confidentiality
 
 Default visibility in the template `submission.yaml` is **`internal`**: shared for evaluation, review, adversarial analysis, mentorship, and challenge-internal discussion. Read `LICENSE_OR_POLICY_NOTICE.md` for the evaluation-only IP framing. If your team later opts into public release, update `submission.yaml` and your own licensing accordingly.
 
-## 10. Submission checklist
+## 11. Submission checklist
 
 - [ ] `Agent` API matches the specification and loads from `agent.py`.
 - [ ] `config.yaml` reflects your runtime (seed, device, checkpoint references).
+- [ ] `submission.yaml` has a complete `runtime_profile` matching your evaluation needs.
 - [ ] `submission.yaml` has real `repo_url` / `commit_hash` (and team fields) for real submissions.
 - [ ] `interpretation_card.md` is complete and non-sensitive.
 - [ ] `requirements.txt` lists all **imported** dependencies; avoid unused heavy packages.

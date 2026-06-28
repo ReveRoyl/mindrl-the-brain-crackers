@@ -1,7 +1,9 @@
 runtime:
   random_seed: 2026
   device: cpu
-
+  execution_type: local_python
+  requires_gpu: false
+  requires_external_api: false
 model:
   name: wsls_baseline
   type: cognitive_baseline
