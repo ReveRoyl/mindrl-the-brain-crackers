@@ -1,5 +1,85 @@
 # MindRL Challenge Submission Template
+<!-- MINDRL_PARTICIPANT_QUICKSTART_START -->
+## Participant Quick Start: Public Data and Hidden Evaluation API
 
+Public dataset homepage: https://huggingface.co/datasets/mindrl-hub/mindrl-challenge-public
+
+Use `public_train.jsonl` for your own training, debugging, and public sanity checks. Organizers may also run public-reference checks, but official ranking uses hidden evaluation splits that are not released to teams.
+
+Download the public trajectory file:
+
+```bash
+huggingface-cli download mindrl-hub/mindrl-challenge-public public_train.jsonl --local-dir ./hf_cache/public
+```
+
+Run a local public evaluation from the core repository:
+
+```bash
+python -m mindrl.evaluator.runner \
+  --agent path/to/your/agent.py \
+  --config path/to/your/config.yaml \
+  --data ./hf_cache/public/public_train.jsonl \
+  --output public_scores.json
+```
+
+### Evaluation API
+
+Evaluation is always one-step-ahead prediction within the current trajectory:
+
+```text
+P(action_t | context, history_1:t-1)
+```
+
+The evaluator calls your agent sequentially:
+
+```python
+agent.reset(context)
+history = []
+for trial in trajectory:
+    prediction = agent.predict(history)      # predict before seeing this trial outcome
+    agent.update(trial.action, trial.reward, trial.info)
+    history.append(trial)
+```
+
+`predict(history)` must return probabilities over exactly `context.available_actions`, for example:
+
+```python
+{"action_probs": {0: 0.25, 1: 0.25, 2: 0.25, 3: 0.25}}
+```
+
+### Hidden evaluation conditions
+
+Hidden evaluation may include several generalization conditions. The evaluator may expose the condition as:
+
+```python
+condition = context.metadata.get("generalization_condition", "unknown")
+```
+
+Expected values:
+
+| Value | What it means for your agent |
+| --- | --- |
+| `public_train` | Released public training trajectory. |
+| `continuation` | Hidden continuation-style segment. The first hidden prediction still starts with `history=[]`; no public prefix history is automatically provided. |
+| `unseen_participant` | Hidden public-task trajectory from a participant not seen in public training. Do not rely on subject-specific lookup tables. |
+| `heldout_block` | Hidden public-task episode/block. The evaluator still calls `reset(context)` for the current trajectory. |
+| `heldout_task` | Hidden trajectory from a different task family or task structure. Read `available_actions`, `num_options`, `task_family`, `task_description`, and `option_features`; do not hard-code four actions. |
+| `unknown` | Fallback; handle missing or unfamiliar labels gracefully. |
+
+You may condition priors, adaptation speed, prompts, model heads, or fallback behavior on this field. You must still adapt only online within the current trajectory after outcomes are revealed.
+
+A robust `reset` pattern:
+
+```python
+def reset(self, context):
+    self.context = context
+    self.actions = list(context.available_actions)
+    metadata = getattr(context, "metadata", {}) or {}
+    self.condition = metadata.get("generalization_condition", "unknown")
+```
+
+Do not use hidden trajectories, current/future trial outcomes, raw-data source reconstruction, source-identifying information, original participant ids, original block ids, demographics, or source mappings.
+<!-- MINDRL_PARTICIPANT_QUICKSTART_END -->
 This repository is the **official participant submission template** for the MindRL Challenge. In its current form it is a **valid minimal submission** that implements a **Win-Stay-Lose-Shift (WSLS)** cognitive baseline, suitable for testing the official `validate_submission.py` script from the **core evaluator** repository (this repo does not ship that script).
 
 ## 1. What this repository is
