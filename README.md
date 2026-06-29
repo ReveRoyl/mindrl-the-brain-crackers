@@ -116,17 +116,23 @@ python scripts/validate_submission.py \
   --output validation_report.json
 ```
 
-To run a local public-data evaluation from the core repository, first download `public_train.jsonl`, then run:
+To run a capped public-data evaluation from the core repository, use the same clone-and-wrapper path organizers use:
 
 ```bash
-python -m mindrl.evaluator.runner \
-  --agent path/to/submission-the-brain-crackers/agent.py \
-  --config path/to/submission-the-brain-crackers/config.yaml \
-  --data ./hf_cache/public/public_train.jsonl \
-  --output public_scores.json
+python scripts/evaluate_submission.py \
+  --repo-url https://github.com/mindrl-challenge/submission-the-brain-crackers.git \
+  --commit-hash <commit_sha> \
+  --agent-path agent.py \
+  --config-path config.yaml \
+  --requirements-path requirements.txt \
+  --eval-config configs/evaluation_config.public_hf_splits.example.yaml \
+  --output public_scores.json \
+  --max-trajectories-per-split 20
 ```
 
-Public scores are useful for debugging and sanity checks. They are not the official ranking.
+Remove `--max-trajectories-per-split 20` when you want to run the full public split. Public scores are useful for debugging and sanity checks. They are not the official ranking.
+
+If you are on Windows and `python` points to the Microsoft Store shim or another wrong interpreter, use `py -3` in place of `python`.
 
 ## Runtime Profile
 
