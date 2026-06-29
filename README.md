@@ -1,28 +1,23 @@
-# MindRL Challenge Submission Template
-<!-- MINDRL_PARTICIPANT_QUICKSTART_START -->
-## Participant Quick Start: Public Data and Hidden Evaluation API
+# MindRL Challenge Submission Repository
+
+This is your team's private submission repository for the MindRL Hub Modeling Challenge. Use it to develop your model, document your method, and pin the exact commit organizers should evaluate.
 
 Public dataset homepage: https://huggingface.co/datasets/mindrl-hub/mindrl-challenge-public
 
 Use `public_train.jsonl` for your own training, debugging, and public sanity checks. Organizers may also run public-reference checks, but official ranking uses hidden evaluation splits that are not released to teams.
 
-Download the public trajectory file:
+## What To Edit
 
-```bash
-huggingface-cli download mindrl-hub/mindrl-challenge-public public_train.jsonl --local-dir ./hf_cache/public
-```
+1. Replace or extend `agent.py` with your model. Keep a top-level `Agent` class.
+2. Update `config.yaml` with the settings your agent needs.
+3. Fill `submission.yaml` with your real team metadata, method description, runtime profile, repo URL, and final commit hash.
+4. Complete `interpretation_card.md` with the claims, mechanisms, limitations, and evidence for your method.
+5. Keep `requirements.txt` minimal but complete: list packages your code imports.
+6. Keep large checkpoints outside git and reference them from `submission.yaml` or `config.yaml`.
 
-Run a local public evaluation from the core repository:
+Do not commit API keys, private data, hidden benchmark files, raw source-identifying information, original participant ids, original block ids, demographics, or source mappings.
 
-```bash
-python -m mindrl.evaluator.runner \
-  --agent path/to/your/agent.py \
-  --config path/to/your/config.yaml \
-  --data ./hf_cache/public/public_train.jsonl \
-  --output public_scores.json
-```
-
-### Evaluation API
+## Agent API
 
 Evaluation is always one-step-ahead prediction within the current trajectory:
 
@@ -41,18 +36,46 @@ for trial in trajectory:
     history.append(trial)
 ```
 
-`predict(history)` must return probabilities over exactly `context.available_actions`, for example:
+Your `Agent` must expose:
+
+```python
+class Agent:
+    def __init__(self, config=None): ...
+    def reset(self, context): ...
+    def predict(self, history): ...
+    def update(self, action, reward, info=None): ...
+```
+
+`predict(history)` must return probabilities over exactly `context.available_actions`:
 
 ```python
 {"action_probs": {0: 0.25, 1: 0.25, 2: 0.25, 3: 0.25}}
 ```
 
-### Hidden evaluation conditions
+Read the action set from `context.available_actions`; do not assume every evaluation task has exactly four actions.
+
+## Public Data
+
+Download the public trajectory file:
+
+```bash
+huggingface-cli download mindrl-hub/mindrl-challenge-public public_train.jsonl --local-dir ./hf_cache/public
+```
+
+Each line in `public_train.jsonl` is one trajectory with:
+
+- `context`: task id, task family, anonymized subject/trajectory ids, available actions, optional features, and metadata.
+- `trials`: chronological observed human choices, rewards, and optional response-time information.
+
+The public dataset is source-safe. Do not try to identify the original study, raw data source, collection site, institution, participant pool, or hidden split origin.
+
+## Hidden Evaluation Conditions
 
 Hidden evaluation may include several generalization conditions. The evaluator may expose the condition as:
 
 ```python
-condition = context.metadata.get("generalization_condition", "unknown")
+metadata = getattr(context, "metadata", {}) or {}
+condition = metadata.get("generalization_condition", "unknown")
 ```
 
 Expected values:
@@ -63,7 +86,7 @@ Expected values:
 | `continuation` | Hidden continuation-style segment. The first hidden prediction still starts with `history=[]`; no public prefix history is automatically provided. |
 | `unseen_participant` | Hidden public-task trajectory from a participant not seen in public training. Do not rely on subject-specific lookup tables. |
 | `heldout_block` | Hidden public-task episode/block. The evaluator still calls `reset(context)` for the current trajectory. |
-| `heldout_task` | Hidden trajectory from a different task family or task structure. Read `available_actions`, `num_options`, `task_family`, `task_description`, and `option_features`; do not hard-code four actions. |
+| `heldout_task` | Hidden trajectory from a different task family or task structure. Read `available_actions`, `num_options`, `task_family`, `task_description`, and `option_features`; do not hard-code public-task assumptions. |
 | `unknown` | Fallback; handle missing or unfamiliar labels gracefully. |
 
 You may condition priors, adaptation speed, prompts, model heads, or fallback behavior on this field. You must still adapt only online within the current trajectory after outcomes are revealed.
@@ -78,68 +101,36 @@ def reset(self, context):
     self.condition = metadata.get("generalization_condition", "unknown")
 ```
 
-Do not use hidden trajectories, current/future trial outcomes, raw-data source reconstruction, source-identifying information, original participant ids, original block ids, demographics, or source mappings.
-<!-- MINDRL_PARTICIPANT_QUICKSTART_END -->
-This repository is the **official participant submission template** for the MindRL Challenge. In its current form it is a **valid minimal submission** that implements a **Win-Stay-Lose-Shift (WSLS)** cognitive baseline, suitable for testing the official `validate_submission.py` script from the **core evaluator** repository (this repo does not ship that script).
+## Local Validation And Public Evaluation
 
-## 1. What this repository is
+The validation/evaluation scripts live in the core repository, not in this team repo. From a local clone of `mindrl-challenge-core`, validate your current committed repo state with toy data:
 
-A **lightweight artifact** that defines what each team turns in: a callable agent module, runtime configuration, machine-readable submission metadata, dependencies, and an interpretation card. It does **not** include the benchmark evaluator, dataset pipeline, training code, leaderboard infrastructure, or hidden evaluation data.
-
-## 2. WSLS baseline in this template
-
-- **`agent.py`** defines `Agent` with the official API: `__init__`, `reset`, `predict`, `update`.
-- **`predict(history)`** returns `{"action_probs": {action: probability, ...}}` with valid probabilities that sum to 1 (after an epsilon floor on every action).
-- With **no history**, the policy is **uniform** over `context["available_actions"]` (or `[1, 2, 3, 4]` if none are provided).
-- With **history**, the last trial’s reward is compared to `model.win_threshold`; above threshold the model favors **staying** on the last action (`stay_probability`); below threshold it favors **shifting** away (complementary mass split across other actions). See `interpretation_card.md` for the scientific framing.
-
-## 3. Required files
-
-| File | Purpose |
-|------|---------|
-| `agent.py` | Your `Agent` class (evaluator imports this). |
-| `config.yaml` | Runtime and model-related settings. |
-| `submission.yaml` | Team and submission metadata for organizers. |
-| `requirements.txt` | Python dependencies (keep minimal). |
-| `interpretation_card.md` | Structured scientific interpretation (community-visible by default). |
-| `LICENSE_OR_POLICY_NOTICE.md` | Restricted evaluation and IP notice. |
-| `.gitignore` | Keeps logs, caches, and local artifacts out of git. |
-
-Optional: `artifacts/` for small local files (see [Artifact / checkpoint guidance](#8-artifact--checkpoint-guidance)).
-
-## 4. Agent API
-
-The official API is:
-
-```python
-class Agent:
-    def __init__(self, config=None)
-    def reset(self, context)
-    def predict(self, history)
-    def update(self, action, reward, info=None)
+```bash
+python scripts/validate_submission.py \
+  --repo-url https://github.com/mindrl-challenge/submission-the-brain-crackers.git \
+  --commit-hash <commit_sha> \
+  --agent-path agent.py \
+  --config-path config.yaml \
+  --requirements-path requirements.txt \
+  --data examples/toy_data/toy_bandit_trajectories.jsonl \
+  --output validation_report.json
 ```
 
-**Semantics**
+To run a local public-data evaluation from the core repository, first download `public_train.jsonl`, then run:
 
-- **`context`** — Provided **once** at the start of a trajectory (e.g. action space, `available_actions`, task identifiers). Use it to set up anything that is fixed for that episode or block.
-- **`history`** — Contains **only past trials** (not the current decision step's outcome). `predict` bases its distribution on this history when present; `update` may cache outcomes but the WSLS policy is driven primarily from **history** for evaluator compatibility.
-- **`predict`** — Must return **action probabilities** over valid actions for this step.
-- **`update`** — Called **after** the true action and reward (and optional `info`) are revealed.
+```bash
+python -m mindrl.evaluator.runner \
+  --agent path/to/submission-the-brain-crackers/agent.py \
+  --config path/to/submission-the-brain-crackers/config.yaml \
+  --data ./hf_cache/public/public_train.jsonl \
+  --output public_scores.json
+```
 
-**Evaluation rule**
+Public scores are useful for debugging and sanity checks. They are not the official ranking.
 
-Parameters are fixed before evaluation; online state may update within a trajectory when `evaluation.allow_online_state_updates` is honored by the evaluator.
+## Runtime Profile
 
-## 5. Replacing the baseline with your own model
-
-1. **Replace `agent.py`** — Keep a top-level `Agent` class with the same four methods and the same `predict` return shape (`action_probs` dict). You may add modules alongside `agent.py` if the evaluator allows; keep imports resolvable via `requirements.txt`.
-2. **Edit `config.yaml`** — Add or rename keys under `model` as your loader expects; keep `runtime` / `evaluation` as required by the challenge.
-3. **Fill `submission.yaml`** — Replace placeholder `repo_url`, `commit_hash`, and team fields with real values before an actual submission.
-4. **Complete `interpretation_card.md`** — Replace or extend the WSLS example sections with claims and evidence for your method (the current card documents the template WSLS only).
-
-## 6. Runtime profile
-
-Every submission must include a `runtime_profile` block in `submission.yaml`. The same summary is copied into the official registry entry so organizers can route evaluations before cloning the repository.
+Every submission must include a `runtime_profile` block in `submission.yaml` so organizers can route evaluation before cloning or running your repository.
 
 ```yaml
 runtime_profile:
@@ -148,53 +139,60 @@ runtime_profile:
   requires_gpu: false
   gpu_type: null
   requires_external_api: false
-  required_secrets: []                # e.g. ["OPENAI_API_KEY"]; leave empty when none
-  estimated_eval_cost: none           # none | low | medium | high, or a short estimate
+  required_secrets: []                # e.g. ["OPENAI_API_KEY"]; list names only, never values
+  estimated_eval_cost: none
   expected_runtime_minutes: null
   notes: "Describe any special evaluation handling here."
 ```
 
-The runtime profile does **not** change the required `Agent` API. Even LLM/API/GPU submissions must expose a callable `Agent` class. Do not commit API keys or secrets. If your approach needs external APIs, list secret names only and describe expected cost or rate limits.
+External API or GPU submissions must still expose a callable `Agent` class. Do not commit secrets.
 
-## 7. Organizer validation (`validate_submission.py`)
 
-Validation is performed using the **core evaluator repository**, not by running a script inside this submission repo. From the **core** repo root, a typical invocation looks like:
+## How Official Submission Works
 
-```bash
-python scripts/validate_submission.py \
-  --repo-url <this-repo-url> \
-  --commit-hash <commit-hash> \
-  --agent-path agent.py \
-  --config-path config.yaml \
-  --requirements-path requirements.txt \
-  --data examples/toy_data/toy_bandit_trajectories.jsonl \
-  --output validation_report.json
+Your official submission is a pinned git commit, not a zip file. The commit hash tells organizers exactly what code and metadata to evaluate.
+
+1. Push your final work to this repository.
+2. Run `git rev-parse HEAD` in this repository.
+3. Put that exact SHA in `submission.yaml` under `submission.commit_hash`.
+4. Make sure `submission.repo_url` is this repository URL.
+5. When organizers open the final submission window, submit or confirm the registry entry that points to this repo URL and commit hash.
+
+The registry entry should point to files inside this repository, usually:
+
+```yaml
+repo_url: https://github.com/mindrl-challenge/submission-the-brain-crackers.git
+commit_hash: <final_commit_sha>
+agent_path: agent.py
+config_path: config.yaml
+requirements_path: requirements.txt
+submission_metadata_path: submission.yaml
+interpretation_card_path: interpretation_card.md
 ```
 
-Adjust `--data` to a **toy or public** path provided by the organizers. Do not commit private evaluation sets.
+If you change code after submitting a commit hash, run `git rev-parse HEAD` again and update the submitted commit hash. Organizers evaluate the pinned commit, not whichever branch happens to be latest.
 
-## 8. How to run other local checks
+## Final Submission Checklist
 
-If the core package exposes a runner module, you can also smoke-test the agent there (exact CLI depends on the released evaluator). Replace data paths with allowed public or toy splits only.
+Before the final submission deadline:
 
-## 9. Artifact / checkpoint guidance
+- Commit and push your final code to this repository.
+- Run `git rev-parse HEAD` and copy that exact commit SHA into `submission.yaml`.
+- Make sure `submission.yaml` points to the right `agent_path`, `config_path`, `requirements_path`, and `interpretation_card_path`.
+- Make sure `runtime_profile` accurately says whether your method needs GPU, external APIs, secrets, large artifacts, or special evaluation handling.
+- Confirm validation passes on toy data from the core repository.
+- Submit the final pinned commit through the challenge registry process announced by organizers.
 
-- **Small** auxiliary files may live under `artifacts/` (see `artifacts/README.md`).
-- **Large** checkpoints belong on Hugging Face (or another organizer-approved host): record the URI in `submission.yaml` / `config.yaml` and keep this git repository small.
-- Never commit API keys, SSH private keys, or raw identifiable participant data.
+## Required Files
 
-## 10. Visibility and confidentiality
+| File | Purpose |
+| --- | --- |
+| `agent.py` | Your `Agent` implementation. |
+| `config.yaml` | Runtime and model settings. |
+| `submission.yaml` | Team metadata, paths, repo URL, commit hash, and runtime profile. |
+| `requirements.txt` | Python dependencies imported by your code. |
+| `interpretation_card.md` | Scientific interpretation, claims, limitations, and evidence. |
+| `LICENSE_OR_POLICY_NOTICE.md` | Challenge evaluation and IP notice. |
+| `.gitignore` | Keeps scores, logs, caches, secrets, and large local artifacts out of git. |
 
-Default visibility in the template `submission.yaml` is **`internal`**: shared for evaluation, review, adversarial analysis, mentorship, and challenge-internal discussion. Read `LICENSE_OR_POLICY_NOTICE.md` for the evaluation-only IP framing. If your team later opts into public release, update `submission.yaml` and your own licensing accordingly.
-
-## 11. Submission checklist
-
-- [ ] `Agent` API matches the specification and loads from `agent.py`.
-- [ ] `config.yaml` reflects your runtime (seed, device, checkpoint references).
-- [ ] `submission.yaml` has a complete `runtime_profile` matching your evaluation needs.
-- [ ] `submission.yaml` has real `repo_url` / `commit_hash` (and team fields) for real submissions.
-- [ ] `interpretation_card.md` is complete and non-sensitive.
-- [ ] `requirements.txt` lists all **imported** dependencies; avoid unused heavy packages.
-- [ ] No secrets, private data, or hidden benchmark files in the repo.
-- [ ] Validation run completed using the official core script and allowed data path.
-- [ ] `scores.json` (or similar) is gitignored and not submitted unless instructions say so.
+Optional small artifacts may live under `artifacts/`. Large checkpoints should be hosted externally on an organizer-approved service and referenced in metadata.
