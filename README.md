@@ -154,29 +154,32 @@ runtime_profile:
 External API or GPU submissions must still expose a callable `Agent` class. Do not commit secrets.
 
 
-## How Official Submission Works
+## How Rolling Submission Works
 
-Your official submission is a pinned git commit, not a zip file. The commit hash tells organizers exactly what code and metadata to evaluate.
+Official submissions are self-service through the **Rolling submission** issue form in mindrl-challenge-core. Your model code stays in this repository; the core repository records only a pinned registry row.
 
-1. Push your final work to this repository.
-2. Run `git rev-parse HEAD` in this repository.
-3. Put that exact SHA in `submission.yaml` under `submission.commit_hash`.
-4. Make sure `submission.repo_url` is this repository URL.
-5. When organizers open the final submission window, submit or confirm the registry entry that points to this repo URL and commit hash.
+1. Push your current work to this repository.
+2. Run git rev-parse HEAD in this repository and copy the full 40-character commit SHA.
+3. Put the same SHA in submission.yaml under submission.commit_hash and make sure submission.repo_url is this repository URL.
+4. Open a **Rolling submission** issue in the core repository: https://github.com/mindrl-challenge/mindrl-challenge-core/issues/new/choose
+5. Fill in the registry fields: team id, display name, visibility, repo URL, commit hash, file paths, method family, and short description.
+6. The intake workflow opens or updates a registry PR in mindrl-challenge-core that changes only submissions_registry.yaml.
+7. CI runs toy validation on the pinned commit. Organizers review and merge the registry PR before the submission enters the evaluation queue.
 
 The registry entry should point to files inside this repository, usually:
 
-```yaml
+``yaml
 repo_url: https://github.com/mindrl-challenge/submission-the-brain-crackers.git
-commit_hash: <final_commit_sha>
+commit_hash: <full_commit_sha>
 agent_path: agent.py
 config_path: config.yaml
 requirements_path: requirements.txt
 submission_metadata_path: submission.yaml
 interpretation_card_path: interpretation_card.md
-```
+``
 
-If you change code after submitting a commit hash, run `git rev-parse HEAD` again and update the submitted commit hash. Organizers evaluate the pinned commit, not whichever branch happens to be latest.
+If you change code after submitting a commit hash, run git rev-parse HEAD again and submit a new rolling issue or update the still-open issue. Organizers evaluate the pinned commit, not whichever branch happens to be latest.
+
 
 ## Final Submission Checklist
 
@@ -187,7 +190,7 @@ Before the final submission deadline:
 - Make sure `submission.yaml` points to the right `agent_path`, `config_path`, `requirements_path`, and `interpretation_card_path`.
 - Make sure `runtime_profile` accurately says whether your method needs GPU, external APIs, secrets, large artifacts, or special evaluation handling.
 - Confirm validation passes on toy data from the core repository.
-- Submit the final pinned commit through the challenge registry process announced by organizers.
+- Open a **Rolling submission** issue in `mindrl-challenge-core` and confirm that the generated registry PR passes validation CI.
 
 ## Required Files
 
