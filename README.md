@@ -54,6 +54,27 @@ class Agent:
 
 Read the action set from `context.available_actions`; do not assume every evaluation task has exactly four actions.
 
+## Optional Response-Time Evaluation
+
+Response-time (RT) modeling is optional and is reported on a separate leaderboard. It does not change the primary choice leaderboard, and choice-only submissions remain fully valid.
+
+To opt in, add this root-level field to `submission.yaml`:
+
+```yaml
+optional_targets:
+  - response_time
+```
+
+Then return a positive, finite RT prediction in milliseconds on every call to `predict()`:
+
+```python
+{
+    "action_probs": {"0": 0.25, "1": 0.25, "2": 0.25, "3": 0.25},
+    "rt_ms": 715.0,
+}
+```
+
+An agent may use RTs from completed prior trials as online context. The current trial's observed RT is not available until after that trial's prediction. See the [full optional RT evaluation specification](https://github.com/mindrl-challenge/mindrl-challenge-core/blob/main/docs/optional_rt_evaluation.md) for validation, scoring, and temporal-boundary details.
 ## Public Data
 
 Download the public trajectory file:
