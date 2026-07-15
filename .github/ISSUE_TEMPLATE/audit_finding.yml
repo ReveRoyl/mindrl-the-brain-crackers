@@ -1,0 +1,85 @@
+name: Audit finding
+about: Open a reproducible finding against this team's frozen Phase 1 checkpoint
+labels: [audit:provisional]
+title: "[Audit]: <audit-team> / <task-id>"
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Use this form only after reproducing the finding on the exact frozen checkpoint. Link an immutable audit-repository commit. Both teams may revise their work, but the formal target SHA does not change. Security, privacy, secrets, or possible hidden-evaluation leakage must be reported privately to organizers first.
+  - type: dropdown
+    id: audit_team
+    attributes:
+      label: Audit Team
+      options: [WL, Model Misers, Pragmatic Tension]
+    validations:
+      required: true
+  - type: input
+    id: task_id
+    attributes:
+      label: Audit Task ID
+      placeholder: calibration-under-permutation
+    validations:
+      required: true
+  - type: input
+    id: frozen_sha
+    attributes:
+      label: Frozen Model Commit
+      description: Exact 40-character Phase 1 checkpoint SHA tested.
+    validations:
+      required: true
+  - type: input
+    id: audit_repo
+    attributes:
+      label: Audit Repository URL
+    validations:
+      required: true
+  - type: input
+    id: audit_commit
+    attributes:
+      label: Audit Evidence Commit
+      description: Immutable 40-character audit-repository SHA containing the evidence.
+    validations:
+      required: true
+  - type: input
+    id: task_folder
+    attributes:
+      label: Audit Task Folder URL
+      description: Permalink to the task folder at the audit evidence commit.
+    validations:
+      required: true
+  - type: textarea
+    id: summary
+    attributes:
+      label: Finding Summary
+      description: State the narrow finding and its scope.
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Evidence and Controls
+      description: Include probes, baselines, negative controls, seeds, uncertainty, and alternative explanations.
+    validations:
+      required: true
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: Reproduction Instructions
+      description: Give the shortest path to reproduce the compact result from the linked audit commit.
+    validations:
+      required: true
+  - type: textarea
+    id: response
+    attributes:
+      label: Requested Response
+      description: Identify the clarification, counterevidence, or correction that would help resolve the finding.
+    validations:
+      required: true
+  - type: checkboxes
+    id: safety
+    attributes:
+      label: Disclosure Check
+      options:
+        - label: I confirm this issue contains no secrets, personal information, hidden trajectories, source mappings, or uncoordinated security/leakage details.
+          required: true
