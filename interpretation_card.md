@@ -55,39 +55,20 @@ For each available action $a$, the agent maintains a Gaussian belief with mean
 $Q_{t,a}$ and variance $V_{t,a}$. When action $a_t$ produces reward $r_t$, the
 innovation and Kalman gain are
 
-```math
-e_t = r_t - Q_{t,a_t},
-```
+$$e_t = r_t - Q_{t,a_t}.$$
 
-```math
-K_t = \frac{V_{t,a_t}}{V_{t,a_t} + \sigma_{\mathrm{obs}}^2}.
-```
+$$K_t = \frac{V_{t,a_t}}{V_{t,a_t} + \sigma_{\mathrm{obs}}^2}.$$
 
 The selected action is updated by
 
-```math
-Q_{t+1,a_t}
-=
-Q_{t,a_t} + K_t e_t,
-```
+$$Q_{t+1,a_t} = Q_{t,a_t} + K_t e_t.$$
 
-```math
-V^{\mathrm{post}}_{t,a_t}
-=
-(1-K_t)V_{t,a_t}.
-```
+$$V^{\mathrm{post}}_{t,a_t} = (1-K_t)V_{t,a_t}.$$
 
 Before the next decision, every action variance receives the fixed process
 variance:
 
-```math
-V_{t+1,a}
-=
-\min\left(
-V^{\mathrm{post}}_{t,a} + \sigma_{\mathrm{proc}}^2,
-V_{\max}
-\right).
-```
+$$V_{t+1,a} = \min\left(V^{\mathrm{post}}_{t,a} + \sigma_{\mathrm{proc}}^2, V_{\max}\right).$$
 
 For an unselected action, its current variance serves as
 $V^{\mathrm{post}}_{t,a}$. Missing or non-finite rewards do not update the
@@ -96,12 +77,7 @@ propagates.
 
 The standardized reward surprise retained for the next choice is
 
-```math
-\delta_t
-=
-\frac{r_t-Q_{t,a_t}}
-{\sqrt{V_{t,a_t}+\sigma_{\mathrm{obs}}^2}}.
-```
+$$\delta_t = \frac{r_t-Q_{t,a_t}}{\sqrt{V_{t,a_t}+\sigma_{\mathrm{obs}}^2}}.$$
 
 All quantities on the right-hand side are evaluated before assimilating the
 current reward.
@@ -112,48 +88,19 @@ Let $\bar Q_t$ be the mean action value, and let $\bar S_t$ be the mean
 posterior standard deviation across the $A_t$ available actions. The common
 scale is
 
-```math
-D_t
-=
-\sqrt{
-\frac{1}{|A_t|}
-\sum_{a\in A_t}
-\left[
-(Q_{t,a}-\bar Q_t)^2 + V_{t,a}
-\right]
-}.
-```
+$$D_t = \sqrt{\frac{1}{|A_t|}\sum_{a\in A_t}\left[(Q_{t,a}-\bar Q_t)^2 + V_{t,a}\right]}.$$
 
 The value and relative-uncertainty features are
 
-```math
-z^Q_{t,a}
-=
-\frac{Q_{t,a}-\bar Q_t}{D_t},
-```
+$$z^Q_{t,a} = \frac{Q_{t,a}-\bar Q_t}{D_t}.$$
 
-```math
-z^U_{t,a}
-=
-\frac{\sqrt{V_{t,a}}-\bar S_t}{D_t}.
-```
+$$z^U_{t,a} = \frac{\sqrt{V_{t,a}}-\bar S_t}{D_t}.$$
 
 The base utility and base choice distribution are
 
-```math
-u_{t,a}
-=
-\beta_Q z^Q_{t,a}
-+
-\beta_U z^U_{t,a},
-```
+$$u_{t,a} = \beta_Q z^Q_{t,a} + \beta_U z^U_{t,a}.$$
 
-```math
-b_{t,a}
-=
-\frac{\exp(u_{t,a})}
-{\sum_{j\in A_t}\exp(u_{t,j})}.
-```
+$$b_{t,a} = \frac{\exp(u_{t,a})}{\sum_{j\in A_t}\exp(u_{t,j})}.$$
 
 ### 4.3 Stay-switch gate
 
@@ -161,24 +108,11 @@ After the first trial, let $a_{t-1}$ denote the previous action, $R_t$ the
 current run length, and $t$ the number of completed trials. The stay-gate logit
 is
 
-```math
-\begin{aligned}
-g_t
-=\;&
-b_0
-+ b_Q\,\operatorname{logit}(b_{t,a_{t-1}})
-+ b_{\delta}\delta_{t-1} \\
-&+ b_{\delta^2}\delta_{t-1}^2
-+ b_R\log(1+R_t)
-+ b_T\log(1+t).
-\end{aligned}
-```
+$$\begin{aligned} g_t ={}& b_0 + b_Q\,\mathrm{logit}(b_{t,a_{t-1}}) + b_{\delta}\delta_{t-1} \\ &+ b_{\delta^2}\delta_{t-1}^2 + b_R\log(1+R_t) + b_T\log(1+t). \end{aligned}$$
 
 The probability of repeating the previous action is
 
-```math
-p_t^{\mathrm{stay}} = \operatorname{sigmoid}(g_t).
-```
+$$p_t^{\mathrm{stay}} = \mathrm{sigmoid}(g_t).$$
 
 This gate allows value, reward surprise, choice history, and within-trajectory
 time to affect persistence without changing the ranking among switch targets.
@@ -190,33 +124,15 @@ interpreted as direct evidence of fatigue or learning without a separate test.
 If the participant switches, the conditional probability of selecting
 $a\ne a_{t-1}$ is
 
-```math
-c_{t,a}
-=
-\frac{\exp(u_{t,a})}
-{\sum_{j\in A_t\setminus\{a_{t-1}\}}\exp(u_{t,j})}.
-```
+$$c_{t,a} = \frac{\exp(u_{t,a})}{\sum_{j\in A_t\setminus\{a_{t-1}\}}\exp(u_{t,j})}.$$
 
 Before lapse mixing, the action probabilities are
 
-```math
-\tilde p_{t,a}
-=
-\begin{cases}
-p_t^{\mathrm{stay}}, & a=a_{t-1},\\
-(1-p_t^{\mathrm{stay}})c_{t,a}, & a\ne a_{t-1}.
-\end{cases}
-```
+$$\tilde p_{t,a} = \begin{cases} p_t^{\mathrm{stay}}, & a=a_{t-1},\\ (1-p_t^{\mathrm{stay}})c_{t,a}, & a\ne a_{t-1}. \end{cases}$$
 
 With lapse parameter $\lambda$, the returned distribution is
 
-```math
-p_{t,a}
-=
-(1-\lambda)\tilde p_{t,a}
-+
-\frac{\lambda}{|A_t|}.
-```
+$$p_{t,a} = (1-\lambda)\tilde p_{t,a} + \frac{\lambda}{|A_t|}.$$
 
 On the first trial, all action beliefs are identical, so the model returns a
 uniform distribution.
