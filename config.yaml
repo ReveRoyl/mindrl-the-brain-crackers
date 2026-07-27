@@ -4,12 +4,31 @@ runtime:
   execution_type: local_python
   requires_gpu: false
   requires_external_api: false
+
 model:
-  name: wsls_baseline
-  type: cognitive_baseline
-  win_threshold: 0.5
-  stay_probability: 0.85
-  epsilon: 0.05
+  name: stovol_lite_cognitive_bandit_v0_1
+  type: adaptive_bayesian_cognitive_model
+
+  initial_value: 50.0
+  initial_variance: 400.0
+  initial_process_variance: 25.0
+  initial_observation_variance: 100.0
+
+  process_floor: 1.0
+  process_ceiling: 400.0
+  observation_floor: 4.0
+  observation_ceiling: 2500.0
+  variance_ceiling: 10000.0
+
+  error_memory_rate: 0.20
+  noise_adaptation_rate: 0.05
+  choice_trace_decay: 0.80
+
+  value_sensitivity: 2.0
+  uncertainty_sensitivity: 0.15
+  choice_sensitivity: 0.50
+  reward_stay_sensitivity: 0.75
+  lapse: 0.03
 
 evaluation:
   allow_online_state_updates: true

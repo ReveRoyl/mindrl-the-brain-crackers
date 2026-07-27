@@ -1,24 +1,27 @@
-# MindRL Challenge — submission metadata (template WSLS baseline).
+# MindRL Challenge — submission metadata (baseline).
 
 team:
-  team_id: template_wsls
-  display_name: Template WSLS Baseline
+  team_id: the_brain_crackers
+  display_name: The Brain Crackers
   members:
-    - name: Template User
-      email: template@example.com
-      role: baseline
+    - name: Lei
+      email: lei.1.luo@kcl.ac.uk
+      role: model development
 
 submission:
   visibility: internal
-  method_family: heuristic_cognitive_model
-  short_description: "A minimal Win-Stay-Lose-Shift baseline for validating the MindRL submission interface."
-  repo_url: TODO
-  commit_hash: TODO
+  method_family: adaptive_bayesian_cognitive_model
+  short_description: >
+    A cognitive bandit model that adaptively distinguishes persistent
+    environmental change from transient outcome noise while separately
+    modeling value learning and choice perseveration.
+  repo_url: https://github.com/mindrl-challenge/submission-the-brain-crackers.git
   agent_path: agent.py
   config_path: config.yaml
   requirements_path: requirements.txt
   interpretation_card_path: interpretation_card.md
 
+optional_targets: []
 
 runtime_profile:
   execution_type: local_python
@@ -29,11 +32,12 @@ runtime_profile:
   required_secrets: []
   estimated_eval_cost: none
   expected_runtime_minutes: null
-  notes: "Template WSLS runs fully inside the evaluator process on CPU."
+  notes: "Choice-only cognitive model running inside the evaluator on CPU."
+
 artifacts:
   hf_checkpoint: null
   external_weights: null
-  notes: "No external artifacts are required."
+  notes: "No external weights or artifacts are required."
 
 policy:
   ip_owner: submitting_team

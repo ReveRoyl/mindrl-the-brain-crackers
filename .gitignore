@@ -8,3 +8,4 @@ scores.json
 artifacts/*
 !artifacts/README.md
 .DS_Store
+/data/
