@@ -1,0 +1,40 @@
+=== Data integrity ===
+Duplicate trajectory IDs: 0
+Trajectories with trial-index errors: 0
+Unique block IDs: 2678
+
+=== Subject structure ===
+Trajectories per subject, min: 2
+Trajectories per subject, max: 4
+Trajectories per subject, mean: 3.89
+Trajectories per subject, median: 4.00
+
+=== Action distribution ===
+Action 0: 81656 (25.51%)
+Action 1: 81698 (25.52%)
+Action 2: 77045 (24.07%)
+Action 3: 79681 (24.89%)
+
+=== Reward distribution ===
+Minimum: 1.000
+Maximum: 100.000
+Mean: 64.889
+Standard deviation: 16.924
+Median: 66.000
+Percentiles 1/5/25/75/95/99: [17. 35. 55. 77. 91. 98.]
+
+=== Reaction-time distribution ===
+Minimum non-missing RT: 1.000
+Maximum non-missing RT: 4059.000
+Mean: 393.786
+Median: 303.000
+Percentiles 1/5/25/75/95/99: [1.000e+00 3.000e+01 1.720e+02 4.590e+02 1.115e+03 2.207e+03]
+
+=== Choice persistence ===
+Overall stay rate: 75.59%
+Trajectory stay rate mean: 75.60%
+Trajectory stay rate SD: 16.26%
+
+=== Between-trajectory reward variation ===
+Mean trajectory reward: 64.884
+SD of trajectory mean reward: 9.539
