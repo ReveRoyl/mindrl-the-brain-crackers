@@ -1,14 +1,7 @@
 __pycache__/
-*.pyc
-.env
-.env.*
-secrets.env
-*.log
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+data/
 scores.json
-artifacts/*
-!artifacts/README.md
-.DS_Store
-docs/init-labbook
-# Local MindRL raw data
-data/raw/*
-/data/
+validation_report.json

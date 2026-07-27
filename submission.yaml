@@ -1,4 +1,4 @@
-# MindRL Challenge — submission metadata (baseline).
+# MindRL Challenge submission metadata.
 
 team:
   team_id: the_brain_crackers
@@ -10,11 +10,11 @@ team:
 
 submission:
   visibility: internal
-  method_family: adaptive_bayesian_cognitive_model
+  method_family: cognitive_reinforcement_learning_model
   short_description: >
-    A cognitive bandit model that adaptively distinguishes persistent
-    environmental change from transient outcome noise while separately
-    modeling value learning and choice perseveration.
+    A two-stage cognitive bandit model that separates the decision to repeat
+    the previous action from the value- and uncertainty-guided choice of a
+    switch target.
   repo_url: https://github.com/mindrl-challenge/submission-the-brain-crackers.git
   agent_path: agent.py
   config_path: config.yaml
@@ -37,7 +37,9 @@ runtime_profile:
 artifacts:
   hf_checkpoint: null
   external_weights: null
-  notes: "No external weights or artifacts are required."
+  notes: >
+    Frozen global parameters are stored locally in
+    artifacts/fitted_params.json; no external download is required.
 
 policy:
   ip_owner: submitting_team

@@ -1,0 +1,62 @@
+{
+  "data": {
+    "file": "public_train.jsonl",
+    "subjects": 689,
+    "trajectories": 2678,
+    "trials": 320080
+  },
+  "final_public_fit_metrics": {
+    "accuracy": 0.7970153295009581,
+    "first_trials": 2678,
+    "later_trials": 317402,
+    "nll": 0.5694096073508662,
+    "stay_nll": 0.18004314889692766,
+    "switch_nll": 1.7471776648151303,
+    "total_trials": 320080
+  },
+  "fit_seed": 2026,
+  "model_name": "stay_switch_kalman_v0_2",
+  "parameters": {
+    "initial_value": 50.0,
+    "initial_variance": 400.0,
+    "lapse": 0.013091332191730445,
+    "observation_variance": 200.0,
+    "process_variance": 25.0,
+    "run_length_weight": 1.2987490197831608,
+    "stay_intercept": -0.73817212528265,
+    "stay_value_weight": 1.8745954876537836,
+    "surprise_linear_weight": 1.4891116050653803,
+    "surprise_quadratic_weight": -1.1006776944652394,
+    "trial_index_weight": 0.2677200479252381,
+    "uncertainty_sensitivity": 0.021051240678780465,
+    "value_sensitivity": 1.0974297377169118,
+    "variance_ceiling": 10000.0
+  },
+  "schema_version": 1,
+  "selection": {
+    "selected_observation_variance": 200.0,
+    "selected_process_variance": 25.0,
+    "split": "subject_disjoint",
+    "training_metrics": {
+      "accuracy": 0.7935206306499516,
+      "first_trials": 2146,
+      "later_trials": 254309,
+      "nll": 0.5779970067850961,
+      "stay_nll": 0.1836745692105162,
+      "switch_nll": 1.7492001487417315,
+      "total_trials": 256455
+    },
+    "training_subjects": 551,
+    "validation_fraction": 0.2,
+    "validation_metrics": {
+      "accuracy": 0.810158480681074,
+      "first_trials": 532,
+      "later_trials": 63093,
+      "nll": 0.5349685917721877,
+      "stay_nll": 0.16859273791411025,
+      "switch_nll": 1.7296098503383217,
+      "total_trials": 63625
+    },
+    "validation_subjects": 138
+  }
+}

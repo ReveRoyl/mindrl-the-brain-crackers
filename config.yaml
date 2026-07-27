@@ -6,29 +6,28 @@ runtime:
   requires_external_api: false
 
 model:
-  name: stovol_lite_cognitive_bandit_v0_1
-  type: adaptive_bayesian_cognitive_model
+  name: stay_switch_kalman_v0_2
+  type: two_stage_cognitive_model
+  fitted_params_path: artifacts/fitted_params.json
 
+  # Fallback values and optimizer starting points used when artifact loading
+  # is disabled by fit_public.py. Frozen artifact values take precedence
+  # during normal evaluation.
   initial_value: 50.0
   initial_variance: 400.0
-  initial_process_variance: 25.0
-  initial_observation_variance: 100.0
-
-  process_floor: 1.0
-  process_ceiling: 400.0
-  observation_floor: 4.0
-  observation_ceiling: 2500.0
+  process_variance: 25.0
+  observation_variance: 100.0
   variance_ceiling: 10000.0
-
-  error_memory_rate: 0.20
-  noise_adaptation_rate: 0.05
-  choice_trace_decay: 0.80
 
   value_sensitivity: 2.0
   uncertainty_sensitivity: 0.15
-  choice_sensitivity: 0.50
-  reward_stay_sensitivity: 0.75
-  lapse: 0.03
+  stay_intercept: 0.0
+  stay_value_weight: 1.0
+  surprise_linear_weight: 0.0
+  surprise_quadratic_weight: 0.0
+  run_length_weight: 0.0
+  trial_index_weight: 0.0
+  lapse: 0.02
 
 evaluation:
   allow_online_state_updates: true

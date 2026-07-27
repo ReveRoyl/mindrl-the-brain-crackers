@@ -1,3 +1,1 @@
-# NumPy 2.3+ requires Python >=3.11; pin below 2.3 so Python 3.10 CI / local envs still resolve.
-numpy>=1.26,<2.3
-pyyaml>=6.0
+PyYAML>=6.0,<7.0
