@@ -8,5 +8,7 @@ scores.json
 artifacts/*
 !artifacts/README.md
 .DS_Store
+docs/init-labbook
 # Local MindRL raw data
 data/raw/*
+/data/

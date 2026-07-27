@@ -54,6 +54,24 @@ class Agent:
 
 Read the action set from `context.available_actions`; do not assume every evaluation task has exactly four actions.
 
+### Fitting and online adaptation
+
+All training, fitting, and model-weight updates must be completed before evaluation. The pinned submission may include parameters or checkpoints fitted offline on the public data.
+
+Allowed during evaluation:
+
+- selecting fixed, precomputed parameters using the anonymized `context.subject_id` when that subject appeared in the public data; the agent must also provide a valid fallback for unseen participants;
+- updating trajectory-local latent state, values, beliefs, or memory from outcomes already revealed in the current trajectory; and
+- using a frozen learned function or inference network to map observed history to an adapted state or prediction.
+
+Not allowed during evaluation:
+
+- MLE, MAP, gradient descent, optimizer steps, parameter search, or any other refitting of model parameters or network weights on evaluation observations;
+- using future trials or unrevealed outcomes; or
+- carrying mutable learned state across trajectories after `reset(context)`.
+
+The practical distinction is that the adaptation rule and all learned weights are fixed before evaluation. Only trajectory-local state may adapt online.
+
 ## Optional Response-Time Evaluation
 
 Response-time (RT) modeling is optional and is reported on a separate leaderboard. It does not change the primary choice leaderboard, and choice-only submissions remain fully valid.
