@@ -8,3 +8,5 @@ scores.json
 artifacts/*
 !artifacts/README.md
 .DS_Store
+# Local MindRL raw data
+data/raw/*
