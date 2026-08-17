@@ -1,5 +1,5 @@
 name: Audit finding
-about: Open a reproducible finding against this team's frozen Phase 1 checkpoint
+description: Open a reproducible finding against this team's frozen Phase 1 checkpoint
 labels: [audit:provisional]
 title: "[Audit]: <audit-team> / <task-id>"
 body:
