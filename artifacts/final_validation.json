@@ -1,0 +1,24 @@
+{
+  "card_parameter_values_match": true,
+  "cv_fitting_attempts": 60,
+  "cv_successful_attempts": 60,
+  "data_sha256": "2a37588cfcbbc7e10df6b1eff22a23ed29a15bef490c18ed36811e27090f4230",
+  "elapsed_seconds": 73.68814659999953,
+  "final_fitting_attempts": 2,
+  "final_successful_attempts": 2,
+  "limits": [
+    "Public data only; no official CI or hidden evaluation executed.",
+    "This parity check does not test psychological identifiability."
+  ],
+  "max_preserved_reference_probability_error": 0.0,
+  "max_runtime_vectorized_probability_error": 5.551115123125783e-16,
+  "metadata_paths_exist": true,
+  "official_style_dynamic_import": "pass",
+  "preserved_parameters_sha256": "7a374bdc31549e6a70b18e8062712e34c7f377c87d3498d7e1f14376c2d32a01",
+  "python": "3.11.5",
+  "sequential_metrics_match_fit": true,
+  "status": "pass",
+  "trajectories": 2678,
+  "trials": 320080,
+  "verified_on": "2026-08-27"
+}

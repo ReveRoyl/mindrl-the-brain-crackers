@@ -5,3 +5,6 @@ __pycache__/
 data/
 scores.json
 validation_report.json
+.preview/
+.venv/
+.audit_inputs/

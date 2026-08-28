@@ -7,6 +7,7 @@ import math
 import sys
 import unittest
 from pathlib import Path
+from types import SimpleNamespace
 from typing import Any
 
 import yaml
@@ -113,6 +114,68 @@ class AgentTests(unittest.TestCase):
         agent.update(action=99, reward=100.0)
         after = agent.predict([])["action_probs"]
         self.assertEqual(before, after)
+
+    def test_arbitrary_labels_and_action_counts(self) -> None:
+        for actions in (["only"], [10, 30], ["A", "B", "C", "D", "E", "F", "G"]):
+            agent = self.make_agent()
+            agent.reset(SimpleNamespace(available_actions=actions))
+            for index in range(12):
+                probabilities = agent.predict(None)["action_probs"]
+                self.assertEqual(set(probabilities), set(actions))
+                self.assertAlmostEqual(sum(probabilities.values()), 1.0, places=12)
+                self.assertTrue(all(math.isfinite(p) and 0.0 <= p <= 1.0 for p in probabilities.values()))
+                agent.update(actions[index % len(actions)], 50.0 + index)
+
+    def test_prediction_is_read_only_and_ignores_future_history(self) -> None:
+        agent = self.make_agent()
+        agent.reset(self.context)
+        agent.update(2, 61.0)
+        before = agent.predict([])
+        for _ in range(3):
+            self.assertEqual(before, agent.predict([{"action": 0, "reward": 9999.0}]))
+
+    def test_all_state_reset_matches_fresh_agent(self) -> None:
+        used, fresh = self.make_agent(), self.make_agent()
+        used.reset(self.context)
+        for action in [2, 2, 1, 2, 3, 3]:
+            used.update(action, 75.0)
+        used.reset(self.context)
+        fresh.reset(self.context)
+        for action in [1, 0, 0, 2]:
+            self.assertEqual(used.predict(None), fresh.predict(None))
+            used.update(action, 40.0)
+            fresh.update(action, 40.0)
+
+    def test_nonfinite_or_unparseable_reward(self) -> None:
+        for reward in [float("nan"), float("inf"), -float("inf"), "", "unavailable"]:
+            agent = self.make_agent()
+            agent.reset(self.context)
+            agent.update(0, reward)
+            self.assert_distribution(agent.predict(None)["action_probs"])
+            self.assertEqual(agent.last_surprise, 0.0)
+
+    def test_parameters_do_not_change_online(self) -> None:
+        agent = self.make_agent()
+        before = {name: getattr(agent, name) for name in agent._FITTED_PARAMETER_NAMES}
+        agent.reset(self.context)
+        for i in range(100):
+            agent.predict(None)
+            agent.update(i % 4, float(i))
+        self.assertEqual(before, {name: getattr(agent, name) for name in before})
+
+    def test_context_ids_and_metadata_do_not_change_prediction(self) -> None:
+        first, second = self.make_agent(), self.make_agent()
+        first.reset(dict(self.context, subject_id="unused_A", metadata={"future": 100}))
+        second.reset(dict(self.context, subject_id="unused_B", metadata={"future": 0}))
+        for action, reward in [(0, 60.0), (1, 40.0), (1, 70.0)]:
+            self.assertEqual(first.predict(None), second.predict(None))
+            first.update(action, reward, {"unrevealed": 0})
+            second.update(action, reward, {"unrevealed": 100})
+
+    def test_invalid_context_rejected(self) -> None:
+        for actions in ([], [0, 0]):
+            with self.assertRaises(ValueError):
+                self.make_agent().reset({"available_actions": actions})
 
 
 if __name__ == "__main__":

@@ -1,0 +1,25 @@
+{
+  "trajectories": 2678,
+  "trials": 320080,
+  "nll": 0.569409607350851,
+  "accuracy": 0.7970153295009754,
+  "categories": {
+    "first": {
+      "trials": 2678,
+      "nll": 1.386294361119812
+    },
+    "stay": {
+      "trials": 239937,
+      "nll": 0.18004314889692535
+    },
+    "switch": {
+      "trials": 77465,
+      "nll": 1.7471776648151245
+    }
+  },
+  "switch_gate_nll": 0.7711146438653835,
+  "switch_target_nll": 0.9760630209497478,
+  "data_sha256": "2a37588cfcbbc7e10df6b1eff22a23ed29a15bef490c18ed36811e27090f4230",
+  "config_sha256": "77ca7b72adfedfa49133597b362d536549a00b7145bcef32f89ca3b4e443178c",
+  "parameters_sha256": "7a374bdc31549e6a70b18e8062712e34c7f377c87d3498d7e1f14376c2d32a01"
+}

@@ -1,0 +1,1758 @@
+{
+  "candidate_specifications": {
+    "baseline": {
+      "extra": [],
+      "l2": 1e-05,
+      "r": 200.0
+    },
+    "history_full": {
+      "extra": [
+        9,
+        10,
+        11,
+        12
+      ],
+      "l2": 1e-05,
+      "r": 200.0
+    },
+    "history_gate": {
+      "extra": [
+        9,
+        10
+      ],
+      "l2": 1e-05,
+      "r": 200.0
+    },
+    "history_r100": {
+      "extra": [
+        9,
+        10,
+        11,
+        12
+      ],
+      "l2": 1e-05,
+      "r": 100.0
+    },
+    "history_regularized": {
+      "extra": [
+        9,
+        10,
+        11,
+        12
+      ],
+      "l2": 0.001,
+      "r": 200.0
+    },
+    "history_target": {
+      "extra": [
+        11,
+        12
+      ],
+      "l2": 1e-05,
+      "r": 200.0
+    }
+  },
+  "data_sha256": "2a37588cfcbbc7e10df6b1eff22a23ed29a15bef490c18ed36811e27090f4230",
+  "environment": {
+    "numpy": "2.2.6",
+    "python": "3.11.5",
+    "scipy": "1.15.3"
+  },
+  "folds": [
+    {
+      "candidates": {
+        "baseline": {
+          "attempts": [
+            {
+              "iterations": 122,
+              "message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH",
+              "objective": 0.5592777431644138,
+              "seconds": 39.25,
+              "success": true
+            },
+            {
+              "iterations": 100,
+              "message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH",
+              "objective": 0.5592777431512346,
+              "seconds": 32.38999999999942,
+              "success": true
+            }
+          ],
+          "parameters": {
+            "frequency_weight": 0.0,
+            "lapse": 0.013294431877738646,
+            "persistence_trace_weight": 0.0,
+            "recency_weight": 0.0,
+            "run_length_weight": 1.3073248116446952,
+            "stay_intercept": -0.8001742603138264,
+            "stay_value_weight": 1.877544923485292,
+            "surprise_linear_weight": 1.4982320063383534,
+            "surprise_quadratic_weight": -1.1056856295423816,
+            "surprise_trace_weight": 0.0,
+            "trial_index_weight": 0.2767620428422062,
+            "uncertainty_sensitivity": -0.008538725307281041,
+            "value_sensitivity": 1.1011385762386317
+          },
+          "validation": {
+            "accuracy": 0.7914527439501612,
+            "first_trials": 535,
+            "nll": 0.5827654007545877,
+            "stay_nll": 0.18305549750378522,
+            "stay_trials": 47600,
+            "switch_gate_nll": 0.7784030836581168,
+            "switch_nll": 1.7634081155627115,
+            "switch_target_nll": 0.9850050319045944,
+            "switch_trials": 15751,
+            "trials": 63886
+          }
+        },
+        "history_full": {
+          "attempts": [
+            {
+              "iterations": 170,
+              "message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH",
+              "objective": 0.5507188034371381,
+              "seconds": 58.90599999999995,
+              "success": true
+            },
+            {
+              "iterations": 168,
+              "message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH",
+              "objective": 0.5507188036119648,
+              "seconds": 49.42200000000048,
+              "success": true
+            }
+          ],
+          "parameters": {
+            "frequency_weight": 0.13848431290364213,
+            "lapse": 0.013176856504475575,
+            "persistence_trace_weight": 0.5017850691723672,
+            "recency_weight": -0.11650058525549331,
+            "run_length_weight": 1.163504848169332,
+            "stay_intercept": -0.09759692155133012,
+            "stay_value_weight": 1.7242167804105923,
+            "surprise_linear_weight": 1.5080600121677552,
+            "surprise_quadratic_weight": -1.1912636234409362,
+            "surprise_trace_weight": 0.4417222093827212,
+            "trial_index_weight": 0.14594382935345723,
+            "uncertainty_sensitivity": 0.20131437503168212,
+            "value_sensitivity": 1.1188575692385558
+          },
+          "validation": {
+            "accuracy": 0.7939780755303717,
+            "first_trials": 535,
+            "nll": 0.5740240612151055,
+            "stay_nll": 0.18069494017553808,
+            "stay_trials": 47600,
+            "switch_gate_nll": 0.764867424331912,
+            "switch_nll": 1.7350869493513728,
+            "switch_target_nll": 0.9702195250194605,
+            "switch_trials": 15751,
+            "trials": 63886
+          }
+        },
+        "history_gate": {
+          "attempts": [
+            {
+              "iterations": 130,
+              "message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH",
+              "objective": 0.5535169010479101,
+              "seconds": 41.53099999999995,
+              "success": true
+            },
+            {
+              "iterations": 121,
+              "message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH",
+              "objective": 0.553516901028514,
+              "seconds": 39.10900000000038,
+              "success": true
+            }
+          ],
+          "parameters": {
+            "frequency_weight": 0.0,
+            "lapse": 0.01265904176413594,
+            "persistence_trace_weight": 0.4928378161373269,
+            "recency_weight": 0.0,
+            "run_length_weight": 1.1128262623752867,
+            "stay_intercept": -0.034410460818527444,
+            "stay_value_weight": 1.9149215772363568,
+            "surprise_linear_weight": 1.4017323591904645,
+            "surprise_quadratic_weight": -1.1814774219540831,
+            "surprise_trace_weight": 0.3510533336440256,
+            "trial_index_weight": 0.09921323810521226,
+            "uncertainty_sensitivity": 0.12528149392697518,
+            "value_sensitivity": 1.124858631630063
+          },
+          "validation": {
+            "accuracy": 0.7934693568752673,
+            "first_trials": 535,
+            "nll": 0.5771556556808276,
+            "stay_nll": 0.18190153377106888,
+            "stay_trials": 47600,
+            "switch_gate_nll": 0.7629522710339732,
+            "switch_nll": 1.744142322907964,
+            "switch_target_nll": 0.9811900518739907,
+            "switch_trials": 15751,
+            "trials": 63886
+          }
+        },
+        "history_r100": {
+          "attempts": [
+            {
+              "iterations": 184,
+              "message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH",
+              "objective": 0.5498561533628721,
+              "seconds": 59.625,
+              "success": true
+            },
+            {
+              "iterations": 144,
+              "message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH",
+              "objective": 0.5498561533532452,
+              "seconds": 47.54699999999957,
+              "success": true
+            }
+          ],
+          "parameters": {
+            "frequency_weight": 0.16839522105469557,
+            "lapse": 0.01459109008387432,
+            "persistence_trace_weight": 0.5040059764999016,
+            "recency_weight": 0.10310779768798305,
+            "run_length_weight": 1.1337798976649445,
+            "stay_intercept": -0.10438686836600877,
+            "stay_value_weight": 1.641238983449056,
+            "surprise_linear_weight": 0.9204947828608163,
+            "surprise_quadratic_weight": -0.7342932259440166,
+            "surprise_trace_weight": 0.8526488071921478,
+            "trial_index_weight": 0.08242093116872817,
+            "uncertainty_sensitivity": 1.0172170538109033,
+            "value_sensitivity": 1.0936803233069756
+          },
+          "validation": {
+            "accuracy": 0.7953268321698025,
+            "first_trials": 535,
+            "nll": 0.5734890768133445,
+            "stay_nll": 0.18058870322808976,
+            "stay_trials": 47600,
+            "switch_gate_nll": 0.7691801622766671,
+            "switch_nll": 1.7332381057990671,
+            "switch_target_nll": 0.9640579435224,
+            "switch_trials": 15751,
+            "trials": 63886
+          }
+        },
+        "history_regularized": {
+          "attempts": [
+            {
+              "iterations": 113,
+              "message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH",
+              "objective": 0.5576624108764945,
+              "seconds": 38.70399999999972,
+              "success": true
+            },
+            {
+              "iterations": 119,
+              "message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH",
+              "objective": 0.5576624105883633,
+              "seconds": 37.07800000000043,
+              "success": true
+            }
+          ],
+          "parameters": {
+            "frequency_weight": 0.15012333530782065,
+            "lapse": 0.006498052807326985,
+            "persistence_trace_weight": 0.4635522615356677,
+            "recency_weight": -0.09460163173851781,
+            "run_length_weight": 1.0440211135069972,
+            "stay_intercept": -0.1088629760452574,
+            "stay_value_weight": 1.4795071697949003,
+            "surprise_linear_weight": 1.1847801623887213,
+            "surprise_quadratic_weight": -0.8876198716886101,
+            "surprise_trace_weight": 0.42301692911275157,
+            "trial_index_weight": 0.11691075913600349,
+            "uncertainty_sensitivity": 0.34875185468336156,
+            "value_sensitivity": 1.1862727520850043
+          },
+          "validation": {
+            "accuracy": 0.7939102463763579,
+            "first_trials": 535,
+            "nll": 0.5749546815756764,
+            "stay_nll": 0.1793194610814586,
+            "stay_trials": 47600,
+            "switch_gate_nll": 0.7728482046306259,
+            "switch_nll": 1.7430182817895434,
+            "switch_target_nll": 0.9701700771589175,
+            "switch_trials": 15751,
+            "trials": 63886
+          }
+        },
+        "history_target": {
+          "attempts": [
+            {
+              "iterations": 130,
+              "message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH",
+              "objective": 0.556716774884791,
+              "seconds": 46.04699999999957,
+              "success": true
+            },
+            {
+              "iterations": 148,
+              "message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH",
+              "objective": 0.5567167750118437,
+              "seconds": 47.0619999999999,
+              "success": true
+            }
+          ],
+          "parameters": {
+            "frequency_weight": 0.1333808412516341,
+            "lapse": 0.013405817669297332,
+            "persistence_trace_weight": 0.0,
+            "recency_weight": -0.07552552229684369,
+            "run_length_weight": 1.3494173879559026,
+            "stay_intercept": -0.8826933200545061,
+            "stay_value_weight": 1.6891385781359085,
+            "surprise_linear_weight": 1.6094845595952536,
+            "surprise_quadratic_weight": -1.1061689655982536,
+            "surprise_trace_weight": 0.0,
+            "trial_index_weight": 0.3126327546018527,
+            "uncertainty_sensitivity": 0.18099895781386632,
+            "value_sensitivity": 1.0995864262161155
+          },
+          "validation": {
+            "accuracy": 0.7920058124367363,
+            "first_trials": 535,
+            "nll": 0.5799585182673636,
+            "stay_nll": 0.1824373627510221,
+            "stay_trials": 47600,
+            "switch_gate_nll": 0.7801462284914973,
+            "switch_nll": 1.7538914321554824,
+            "switch_target_nll": 0.973745203663985,
+            "switch_trials": 15751,
+            "trials": 63886
+          }
+        },
+        "mixture": {
+          "validation": {
+            "accuracy": 0.7929841175427063,
+            "first_trials": 535,
+            "nll": 0.5761729870267603,
+            "stay_nll": 0.18098570085984994,
+            "stay_trials": 47600,
+            "switch_gate_nll": 0.7663140159975734,
+            "switch_nll": 1.7429242971915189,
+            "switch_target_nll": 0.9766102811939454,
+            "switch_trials": 15751,
+            "trials": 63886
+          }
+        }
+      },
+      "fold": 0,
+      "training_subjects": 551,
+      "validation_membership_sha256": "059e74c5834811fa835b30b9e747b90dbbbd2fdc1b94b9c1d7b600216ca811e0",
+      "validation_subjects": 138
+    },
+    {
+      "candidates": {
+        "baseline": {
+          "attempts": [
+            {
+              "iterations": 80,
+              "message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH",
+              "objective": 0.5661128390219746,
+              "seconds": 35.32800000000043,
+              "success": true
+            },
+            {
+              "iterations": 89,
+              "message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH",
+              "objective": 0.5661128382839972,
+              "seconds": 34.875,
+              "success": true
+            }
+          ],
+          "parameters": {
+            "frequency_weight": 0.0,
+            "lapse": 0.012871066941407694,
+            "persistence_trace_weight": 0.0,
+            "recency_weight": 0.0,
+            "run_length_weight": 1.2945371530185605,
+            "stay_intercept": -0.7158333745486991,
+            "stay_value_weight": 1.8444306897275373,
+            "surprise_linear_weight": 1.4811468402114882,
+            "surprise_quadratic_weight": -1.1299552503160226,
+            "surprise_trace_weight": 0.0,
+            "trial_index_weight": 0.26607981505283224,
+            "uncertainty_sensitivity": 0.08460641857646342,
+            "value_sensitivity": 1.121730780814926
+          },
+          "validation": {
+            "accuracy": 0.8018796662954254,
+            "first_trials": 541,
+            "nll": 0.5558856343774302,
+            "stay_nll": 0.17563130369307453,
+            "stay_trials": 48829,
+            "switch_gate_nll": 0.7642611238883092,
+            "switch_nll": 1.7417861181985277,
+            "switch_target_nll": 0.9775249943102187,
+            "switch_trials": 15278,
+            "trials": 64648
+          }
+        },
+        "history_full": {
+          "attempts": [
+            {
+              "iterations": 178,
+              "message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH",
+              "objective": 0.5579918261517479,
+              "seconds": 80.21799999999985,
+              "success": true
+            },
+            {
+              "iterations": 151,
+              "message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH",
+              "objective": 0.557991826205875,
+              "seconds": 69.82800000000043,
+              "success": true
+            }
+          ],
+          "parameters": {
+            "frequency_weight": 0.13356841832855254,
+            "lapse": 0.012348104077241103,
+            "persistence_trace_weight": 0.48912365116047074,
+            "recency_weight": -0.1403291697286343,
+            "run_length_weight": 1.1600738231046763,
+            "stay_intercept": -0.02399037755102079,
+            "stay_value_weight": 1.705318543840516,
+            "surprise_linear_weight": 1.4690763522957337,
+            "surprise_quadratic_weight": -1.2087451861691125,
+            "surprise_trace_weight": 0.5304729494463994,
+            "trial_index_weight": 0.14337352009333076,
+            "uncertainty_sensitivity": 0.19527948857384494,
+            "value_sensitivity": 1.1302821733405286
+          },
+          "validation": {
+            "accuracy": 0.8037075135090541,
+            "first_trials": 541,
+            "nll": 0.5454509553116973,
+            "stay_nll": 0.17699318431598604,
+            "stay_trials": 48829,
+            "switch_gate_nll": 0.7256261044100546,
+            "switch_nll": 1.693279742941449,
+            "switch_target_nll": 0.9676536385313945,
+            "switch_trials": 15278,
+            "trials": 64648
+          }
+        },
+        "history_gate": {
+          "attempts": [
+            {
+              "iterations": 135,
+              "message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH",
+              "objective": 0.5608231394196479,
+              "seconds": 53.71900000000005,
+              "success": true
+            },
+            {
+              "iterations": 135,
+              "message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH",
+              "objective": 0.5608231395584544,
+              "seconds": 60.15599999999995,
+              "success": true
+            }
+          ],
+          "parameters": {
+            "frequency_weight": 0.0,
+            "lapse": 0.011854669361416641,
+            "persistence_trace_weight": 0.47898897546467717,
+            "recency_weight": 0.0,
+            "run_length_weight": 1.104084918988168,
+            "stay_intercept": 0.023797151927254685,
+            "stay_value_weight": 1.8775321749047287,
+            "surprise_linear_weight": 1.3593892633575901,
+            "surprise_quadratic_weight": -1.1956195454776535,
+            "surprise_trace_weight": 0.4441484398310355,
+            "trial_index_weight": 0.09199205134374923,
+            "uncertainty_sensitivity": 0.2027137804808803,
+            "value_sensitivity": 1.14102716884231
+          },
+          "validation": {
+            "accuracy": 0.8036533741698635,
+            "first_trials": 541,
+            "nll": 0.5484265396608756,
+            "stay_nll": 0.17819331176484543,
+            "stay_trials": 48829,
+            "switch_gate_nll": 0.7256123179789441,
+            "switch_nll": 1.70203511365786,
+            "switch_target_nll": 0.9764227956789158,
+            "switch_trials": 15278,
+            "trials": 64648
+          }
+        },
+        "history_r100": {
+          "attempts": [
+            {
+              "iterations": 159,
+              "message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH",
+              "objective": 0.5573468727090072,
+              "seconds": 70.70300000000043,
+              "success": true
+            },
+            {
+              "iterations": 162,
+              "message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH",
+              "objective": 0.5573468729322127,
+              "seconds": 61.76599999999962,
+              "success": true
+            }
+          ],
+          "parameters": {
+            "frequency_weight": 0.16250263807412,
+            "lapse": 0.013898511581027279,
+            "persistence_trace_weight": 0.4904578263537433,
+            "recency_weight": 0.07367300627696752,
+            "run_length_weight": 1.13227430581099,
+            "stay_intercept": -0.03669026403816989,
+            "stay_value_weight": 1.6292751527717957,
+            "surprise_linear_weight": 0.8889302531816824,
+            "surprise_quadratic_weight": -0.746752401554262,
+            "surprise_trace_weight": 0.9310258225741438,
+            "trial_index_weight": 0.08325670728225472,
+            "uncertainty_sensitivity": 0.9848576799996902,
+            "value_sensitivity": 1.1008481345407373
+          },
+          "validation": {
+            "accuracy": 0.8049088912263334,
+            "first_trials": 541,
+            "nll": 0.5440323209165044,
+            "stay_nll": 0.17568167071723712,
+            "stay_trials": 48829,
+            "switch_gate_nll": 0.7302887958662683,
+            "switch_nll": 1.691468512488045,
+            "switch_target_nll": 0.9611797166217766,
+            "switch_trials": 15278,
+            "trials": 64648
+          }
+        },
+        "history_regularized": {
+          "attempts": [
+            {
+              "iterations": 150,
+              "message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH",
+              "objective": 0.5649088375946595,
+              "seconds": 69.64000000000033,
+              "success": true
+            },
+            {
+              "iterations": 129,
+              "message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH",
+              "objective": 0.5649088375408925,
+              "seconds": 56.3130000000001,
+              "success": true
+            }
+          ],
+          "parameters": {
+            "frequency_weight": 0.14374936048221643,
+            "lapse": 0.006009206502072277,
+            "persistence_trace_weight": 0.44979128597110374,
+            "recency_weight": -0.11768169967694461,
+            "run_length_weight": 1.0501903891258726,
+            "stay_intercept": -0.07059495793043544,
+            "stay_value_weight": 1.4699185357397389,
+            "surprise_linear_weight": 1.1726217159907109,
+            "surprise_quadratic_weight": -0.9059865796370647,
+            "surprise_trace_weight": 0.4542248745781666,
+            "trial_index_weight": 0.11956456630923654,
+            "uncertainty_sensitivity": 0.34765653622741755,
+            "value_sensitivity": 1.2005439628901822
+          },
+          "validation": {
+            "accuracy": 0.8036198593408407,
+            "first_trials": 541,
+            "nll": 0.546485561142524,
+            "stay_nll": 0.17575327473655247,
+            "stay_trials": 48829,
+            "switch_gate_nll": 0.7334151932248921,
+            "switch_nll": 1.7016204120477096,
+            "switch_target_nll": 0.9682052188228173,
+            "switch_trials": 15278,
+            "trials": 64648
+          }
+        },
+        "history_target": {
+          "attempts": [
+            {
+              "iterations": 146,
+              "message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH",
+              "objective": 0.5635158919504176,
+              "seconds": 64.59400000000005,
+              "success": true
+            },
+            {
+              "iterations": 132,
+              "message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH",
+              "objective": 0.5635158920084978,
+              "seconds": 60.25,
+              "success": true
+            }
+          ],
+          "parameters": {
+            "frequency_weight": 0.13011283578595068,
+            "lapse": 0.012859173431849676,
+            "persistence_trace_weight": 0.0,
+            "recency_weight": -0.09978568085487757,
+            "run_length_weight": 1.3410749955848742,
+            "stay_intercept": -0.7862010136265098,
+            "stay_value_weight": 1.6706283723965025,
+            "surprise_linear_weight": 1.596547579261084,
+            "surprise_quadratic_weight": -1.133309646709921,
+            "surprise_trace_weight": 0.0,
+            "trial_index_weight": 0.3076235298016491,
+            "uncertainty_sensitivity": 0.19246801110862202,
+            "value_sensitivity": 1.1146640424765522
+          },
+          "validation": {
+            "accuracy": 0.8015548302602814,
+            "first_trials": 541,
+            "nll": 0.5532270398144243,
+            "stay_nll": 0.17479792322816695,
+            "stay_trials": 48829,
+            "switch_gate_nll": 0.7650797041781198,
+            "switch_nll": 1.7331999363299435,
+            "switch_target_nll": 0.9681202321518237,
+            "switch_trials": 15278,
+            "trials": 64648
+          }
+        },
+        "mixture": {
+          "validation": {
+            "accuracy": 0.8036972012539703,
+            "first_trials": 541,
+            "nll": 0.5482701916877415,
+            "stay_nll": 0.1753464311234309,
+            "stay_trials": 48829,
+            "switch_gate_nll": 0.7388149758088729,
+            "switch_nll": 1.7104722619149917,
+            "switch_target_nll": 0.971657286106119,
+            "switch_trials": 15278,
+            "trials": 64648
+          }
+        }
+      },
+      "fold": 1,
+      "training_subjects": 551,
+      "validation_membership_sha256": "36dcd03b114803d73f3f77896a5a67ad648f03ad434b1a5b3ae4be8bccd0690d",
+      "validation_subjects": 138
+    },
+    {
+      "candidates": {
+        "baseline": {
+          "attempts": [
+            {
+              "iterations": 86,
+              "message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH",
+              "objective": 0.5613085663540314,
+              "seconds": 36.13999999999942,
+              "success": true
+            },
+            {
+              "iterations": 104,
+              "message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH",
+              "objective": 0.5613085663645601,
+              "seconds": 41.45300000000043,
+              "success": true
+            }
+          ],
+          "parameters": {
+            "frequency_weight": 0.0,
+            "lapse": 0.013963725894459178,
+            "persistence_trace_weight": 0.0,
+            "recency_weight": 0.0,
+            "run_length_weight": 1.3110591111594148,
+            "stay_intercept": -0.7520160470605052,
+            "stay_value_weight": 1.933407321799859,
+            "surprise_linear_weight": 1.4977219102173374,
+            "surprise_quadratic_weight": -1.0877467109782903,
+            "surprise_trace_weight": 0.0,
+            "trial_index_weight": 0.2732573765308901,
+            "uncertainty_sensitivity": 0.03078018113448956,
+            "value_sensitivity": 1.0934733462658572
+          },
+          "validation": {
+            "accuracy": 0.7962395925620818,
+            "first_trials": 538,
+            "nll": 0.5747620053336628,
+            "stay_nll": 0.19652626709312968,
+            "stay_trials": 48421,
+            "switch_gate_nll": 0.7680137375948682,
+            "switch_nll": 1.7373285467520432,
+            "switch_target_nll": 0.9693148091571752,
+            "switch_trials": 15378,
+            "trials": 64337
+          }
+        },
+        "history_full": {
+          "attempts": [
+            {
+              "iterations": 165,
+              "message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH",
+              "objective": 0.5527646475941802,
+              "seconds": 75.9369999999999,
+              "success": true
+            },
+            {
+              "iterations": 175,
+              "message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH",
+              "objective": 0.5527646479279571,
+              "seconds": 79.0,
+              "success": true
+            }
+          ],
+          "parameters": {
+            "frequency_weight": 0.13192065680447246,
+            "lapse": 0.013899256843445448,
+            "persistence_trace_weight": 0.5009913992072468,
+            "recency_weight": -0.11606818994268363,
+            "run_length_weight": 1.1735353199450997,
+            "stay_intercept": -0.05438210236541521,
+            "stay_value_weight": 1.7694892696728575,
+            "surprise_linear_weight": 1.5214271599077853,
+            "surprise_quadratic_weight": -1.178736018169854,
+            "surprise_trace_weight": 0.39499493102051014,
+            "trial_index_weight": 0.14225461430936126,
+            "uncertainty_sensitivity": 0.2325483426146883,
+            "value_sensitivity": 1.1134694712035458
+          },
+          "validation": {
+            "accuracy": 0.7964390630585821,
+            "first_trials": 538,
+            "nll": 0.5659398083078518,
+            "stay_nll": 0.19237940938630826,
+            "stay_trials": 48421,
+            "switch_gate_nll": 0.756361416908924,
+            "switch_nll": 1.7134763752715139,
+            "switch_target_nll": 0.9571149583625899,
+            "switch_trials": 15378,
+            "trials": 64337
+          }
+        },
+        "history_gate": {
+          "attempts": [
+            {
+              "iterations": 128,
+              "message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH",
+              "objective": 0.5554090877412223,
+              "seconds": 52.42199999999957,
+              "success": true
+            },
+            {
+              "iterations": 117,
+              "message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH",
+              "objective": 0.5554090873395574,
+              "seconds": 50.98400000000038,
+              "success": true
+            }
+          ],
+          "parameters": {
+            "frequency_weight": 0.0,
+            "lapse": 0.013493817883030192,
+            "persistence_trace_weight": 0.4936278930079034,
+            "recency_weight": 0.0,
+            "run_length_weight": 1.1195043496169603,
+            "stay_intercept": 0.01727075515542743,
+            "stay_value_weight": 1.9700525841623096,
+            "surprise_linear_weight": 1.4157571653804504,
+            "surprise_quadratic_weight": -1.1689533519986661,
+            "surprise_trace_weight": 0.2978851810772275,
+            "trial_index_weight": 0.09496355664334351,
+            "uncertainty_sensitivity": 0.16689526659383122,
+            "value_sensitivity": 1.1175016480291318
+          },
+          "validation": {
+            "accuracy": 0.7966696198662252,
+            "first_trials": 538,
+            "nll": 0.5697067279644976,
+            "stay_nll": 0.19487589806502514,
+            "stay_trials": 48421,
+            "switch_gate_nll": 0.7545769352331274,
+            "switch_nll": 1.7213753108702563,
+            "switch_target_nll": 0.966798375637129,
+            "switch_trials": 15378,
+            "trials": 64337
+          }
+        },
+        "history_r100": {
+          "attempts": [
+            {
+              "iterations": 175,
+              "message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH",
+              "objective": 0.5518759144704152,
+              "seconds": 78.40599999999995,
+              "success": true
+            },
+            {
+              "iterations": 153,
+              "message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH",
+              "objective": 0.5518759151494868,
+              "seconds": 52.5630000000001,
+              "success": true
+            }
+          ],
+          "parameters": {
+            "frequency_weight": 0.15989415326850293,
+            "lapse": 0.015227430234811368,
+            "persistence_trace_weight": 0.5048460594051094,
+            "recency_weight": 0.09180476244175616,
+            "run_length_weight": 1.1437467597883484,
+            "stay_intercept": -0.058764365680892494,
+            "stay_value_weight": 1.6858118972854677,
+            "surprise_linear_weight": 0.9272976894812156,
+            "surprise_quadratic_weight": -0.7203390983970115,
+            "surprise_trace_weight": 0.8244200224338072,
+            "trial_index_weight": 0.07965992528462167,
+            "uncertainty_sensitivity": 1.0072352317706594,
+            "value_sensitivity": 1.087339879716387
+          },
+          "validation": {
+            "accuracy": 0.7965167788364393,
+            "first_trials": 538,
+            "nll": 0.5655049790262323,
+            "stay_nll": 0.19214664152279914,
+            "stay_trials": 48421,
+            "switch_gate_nll": 0.7613297561294017,
+            "switch_nll": 1.7123900988524354,
+            "switch_target_nll": 0.9510603427230337,
+            "switch_trials": 15378,
+            "trials": 64337
+          }
+        },
+        "history_regularized": {
+          "attempts": [
+            {
+              "iterations": 135,
+              "message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH",
+              "objective": 0.5597888801795624,
+              "seconds": 64.48499999999967,
+              "success": true
+            },
+            {
+              "iterations": 135,
+              "message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH",
+              "objective": 0.5597888801337794,
+              "seconds": 59.32800000000043,
+              "success": true
+            }
+          ],
+          "parameters": {
+            "frequency_weight": 0.14475240465911912,
+            "lapse": 0.007108061544366942,
+            "persistence_trace_weight": 0.4626178916138625,
+            "recency_weight": -0.09552760246789484,
+            "run_length_weight": 1.0538734622355959,
+            "stay_intercept": -0.08730530674623524,
+            "stay_value_weight": 1.504140598135451,
+            "surprise_linear_weight": 1.190483683690069,
+            "surprise_quadratic_weight": -0.8692937566690329,
+            "surprise_trace_weight": 0.4048394792666449,
+            "trial_index_weight": 0.11484872918272392,
+            "uncertainty_sensitivity": 0.388436696957473,
+            "value_sensitivity": 1.1864562251632986
+          },
+          "validation": {
+            "accuracy": 0.7963587567547964,
+            "first_trials": 538,
+            "nll": 0.566465101391371,
+            "stay_nll": 0.1908776310569725,
+            "stay_trials": 48421,
+            "switch_gate_nll": 0.7642568190921385,
+            "switch_nll": 1.7204027239253783,
+            "switch_target_nll": 0.9561459048332399,
+            "switch_trials": 15378,
+            "trials": 64337
+          }
+        },
+        "history_target": {
+          "attempts": [
+            {
+              "iterations": 144,
+              "message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH",
+              "objective": 0.5588729832040967,
+              "seconds": 65.90599999999995,
+              "success": true
+            },
+            {
+              "iterations": 140,
+              "message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH",
+              "objective": 0.5588729830102787,
+              "seconds": 63.35899999999947,
+              "success": true
+            }
+          ],
+          "parameters": {
+            "frequency_weight": 0.12709555341376466,
+            "lapse": 0.013945165714934867,
+            "persistence_trace_weight": 0.0,
+            "recency_weight": -0.0768386454106539,
+            "run_length_weight": 1.3555171439888445,
+            "stay_intercept": -0.8392190962986412,
+            "stay_value_weight": 1.7360430519423364,
+            "surprise_linear_weight": 1.60940444307419,
+            "surprise_quadratic_weight": -1.0883402432636875,
+            "surprise_trace_weight": 0.0,
+            "trial_index_weight": 0.3092514034231813,
+            "uncertainty_sensitivity": 0.2047966238719115,
+            "value_sensitivity": 1.0934052829173553
+          },
+          "validation": {
+            "accuracy": 0.7961800104657248,
+            "first_trials": 538,
+            "nll": 0.5714368898933648,
+            "stay_nll": 0.19506500131067994,
+            "stay_trials": 48421,
+            "switch_gate_nll": 0.7689389594219798,
+            "switch_nll": 1.728018363267166,
+            "switch_target_nll": 0.9590794038451865,
+            "switch_trials": 15378,
+            "trials": 64337
+          }
+        },
+        "mixture": {
+          "validation": {
+            "accuracy": 0.79713332400744,
+            "first_trials": 538,
+            "nll": 0.568288569931571,
+            "stay_nll": 0.1935209988317342,
+            "stay_trials": 48421,
+            "switch_gate_nll": 0.7574225279574245,
+            "switch_nll": 1.7197083543356468,
+            "switch_target_nll": 0.9622858263782222,
+            "switch_trials": 15378,
+            "trials": 64337
+          }
+        }
+      },
+      "fold": 2,
+      "training_subjects": 551,
+      "validation_membership_sha256": "92e2cecae96412a7266334facb1afa82fa331a40253960b5930d8256c473bea6",
+      "validation_subjects": 138
+    },
+    {
+      "candidates": {
+        "baseline": {
+          "attempts": [
+            {
+              "iterations": 81,
+              "message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH",
+              "objective": 0.5610594394524971,
+              "seconds": 34.73499999999967,
+              "success": true
+            },
+            {
+              "iterations": 81,
+              "message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH",
+              "objective": 0.561059439353654,
+              "seconds": 33.54600000000028,
+              "success": true
+            }
+          ],
+          "parameters": {
+            "frequency_weight": 0.0,
+            "lapse": 0.012980370738056852,
+            "persistence_trace_weight": 0.0,
+            "recency_weight": 0.0,
+            "run_length_weight": 1.291621721781846,
+            "stay_intercept": -0.7365536595214394,
+            "stay_value_weight": 1.8561189017976025,
+            "surprise_linear_weight": 1.4641986561043432,
+            "surprise_quadratic_weight": -1.091295833893668,
+            "surprise_trace_weight": 0.0,
+            "trial_index_weight": 0.2642645685976287,
+            "uncertainty_sensitivity": -0.007015964325846904,
+            "value_sensitivity": 1.0888832864219087
+          },
+          "validation": {
+            "accuracy": 0.7946063037011701,
+            "first_trials": 538,
+            "nll": 0.57562685519742,
+            "stay_nll": 0.17876660698118155,
+            "stay_trials": 47902,
+            "switch_gate_nll": 0.7639858597817056,
+            "switch_nll": 1.7451433198660993,
+            "switch_target_nll": 0.9811574600843935,
+            "switch_trials": 15882,
+            "trials": 64322
+          }
+        },
+        "history_full": {
+          "attempts": [
+            {
+              "iterations": 148,
+              "message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH",
+              "objective": 0.5525909955109892,
+              "seconds": 69.90599999999995,
+              "success": true
+            },
+            {
+              "iterations": 180,
+              "message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH",
+              "objective": 0.552590994127764,
+              "seconds": 81.53099999999995,
+              "success": true
+            }
+          ],
+          "parameters": {
+            "frequency_weight": 0.1463454801243505,
+            "lapse": 0.012919078125316124,
+            "persistence_trace_weight": 0.48429006416299136,
+            "recency_weight": -0.12051521577139838,
+            "run_length_weight": 1.1556789360387303,
+            "stay_intercept": -0.07177615665214139,
+            "stay_value_weight": 1.6931078854719577,
+            "surprise_linear_weight": 1.4778983314528729,
+            "surprise_quadratic_weight": -1.1731619328651324,
+            "surprise_trace_weight": 0.48007469328646235,
+            "trial_index_weight": 0.14278342965486285,
+            "uncertainty_sensitivity": 0.19972982659385818,
+            "value_sensitivity": 1.1024112835393785
+          },
+          "validation": {
+            "accuracy": 0.7949742441673662,
+            "first_trials": 538,
+            "nll": 0.566609323790773,
+            "stay_nll": 0.17462873660644251,
+            "stay_trials": 47902,
+            "switch_gate_nll": 0.7553031330816771,
+            "switch_nll": 1.721102683394144,
+            "switch_target_nll": 0.9657995503124669,
+            "switch_trials": 15882,
+            "trials": 64322
+          }
+        },
+        "history_gate": {
+          "attempts": [
+            {
+              "iterations": 143,
+              "message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH",
+              "objective": 0.5556549288225092,
+              "seconds": 58.10899999999947,
+              "success": true
+            },
+            {
+              "iterations": 156,
+              "message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH",
+              "objective": 0.5556549285756099,
+              "seconds": 68.84400000000005,
+              "success": true
+            }
+          ],
+          "parameters": {
+            "frequency_weight": 0.0,
+            "lapse": 0.012067564670803074,
+            "persistence_trace_weight": 0.472268716361655,
+            "recency_weight": 0.0,
+            "run_length_weight": 1.1012038998968334,
+            "stay_intercept": 0.002659535913250205,
+            "stay_value_weight": 1.884229237730975,
+            "surprise_linear_weight": 1.3604382152114607,
+            "surprise_quadratic_weight": -1.159569972285457,
+            "surprise_trace_weight": 0.3885301526396758,
+            "trial_index_weight": 0.09253220380592157,
+            "uncertainty_sensitivity": 0.1108140893093719,
+            "value_sensitivity": 1.108601780148026
+          },
+          "validation": {
+            "accuracy": 0.7955209726065731,
+            "first_trials": 538,
+            "nll": 0.5686884631169367,
+            "stay_nll": 0.17471677834170057,
+            "stay_trials": 47902,
+            "switch_gate_nll": 0.7511551480696185,
+            "switch_nll": 1.7292576402342874,
+            "switch_target_nll": 0.978102492164669,
+            "switch_trials": 15882,
+            "trials": 64322
+          }
+        },
+        "history_r100": {
+          "attempts": [
+            {
+              "iterations": 149,
+              "message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH",
+              "objective": 0.5517647069969237,
+              "seconds": 68.82800000000043,
+              "success": true
+            },
+            {
+              "iterations": 156,
+              "message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH",
+              "objective": 0.5517647073698919,
+              "seconds": 58.60999999999967,
+              "success": true
+            }
+          ],
+          "parameters": {
+            "frequency_weight": 0.1751638945311384,
+            "lapse": 0.014331924341902622,
+            "persistence_trace_weight": 0.4882784086299853,
+            "recency_weight": 0.09515653238914398,
+            "run_length_weight": 1.1253861340340001,
+            "stay_intercept": -0.07569589148586106,
+            "stay_value_weight": 1.6176513139349304,
+            "surprise_linear_weight": 0.9005573170135848,
+            "surprise_quadratic_weight": -0.7218996103596355,
+            "surprise_trace_weight": 0.8878781539951588,
+            "trial_index_weight": 0.08143994825177157,
+            "uncertainty_sensitivity": 0.9992862942733794,
+            "value_sensitivity": 1.0765192919230833
+          },
+          "validation": {
+            "accuracy": 0.7958707751624639,
+            "first_trials": 538,
+            "nll": 0.5659074597260962,
+            "stay_nll": 0.1753421970393798,
+            "stay_trials": 47902,
+            "switch_gate_nll": 0.7581019356128326,
+            "switch_nll": 1.7161082568718729,
+            "switch_target_nll": 0.9580063212590401,
+            "switch_trials": 15882,
+            "trials": 64322
+          }
+        },
+        "history_regularized": {
+          "attempts": [
+            {
+              "iterations": 141,
+              "message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH",
+              "objective": 0.5593704298323111,
+              "seconds": 64.73500000000058,
+              "success": true
+            },
+            {
+              "iterations": 147,
+              "message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH",
+              "objective": 0.5593704290208001,
+              "seconds": 63.40599999999995,
+              "success": true
+            }
+          ],
+          "parameters": {
+            "frequency_weight": 0.1567115071168684,
+            "lapse": 0.006558045392496354,
+            "persistence_trace_weight": 0.44892800306384517,
+            "recency_weight": -0.0998012955711812,
+            "run_length_weight": 1.0419815101652754,
+            "stay_intercept": -0.0916137034529698,
+            "stay_value_weight": 1.4613348361190799,
+            "surprise_linear_weight": 1.1698611053069197,
+            "surprise_quadratic_weight": -0.8751536995749123,
+            "surprise_trace_weight": 0.43406796606133696,
+            "trial_index_weight": 0.11611625481744722,
+            "uncertainty_sensitivity": 0.3415901314755614,
+            "value_sensitivity": 1.169818159911557
+          },
+          "validation": {
+            "accuracy": 0.793968885710436,
+            "first_trials": 538,
+            "nll": 0.5682860704580346,
+            "stay_nll": 0.17432191390116356,
+            "stay_trials": 47902,
+            "switch_gate_nll": 0.7636254492375777,
+            "switch_nll": 1.7288189105922216,
+            "switch_target_nll": 0.9651934613546438,
+            "switch_trials": 15882,
+            "trials": 64322
+          }
+        },
+        "history_target": {
+          "attempts": [
+            {
+              "iterations": 124,
+              "message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH",
+              "objective": 0.5582778606788799,
+              "seconds": 54.85999999999967,
+              "success": true
+            },
+            {
+              "iterations": 122,
+              "message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH",
+              "objective": 0.5582778607357948,
+              "seconds": 56.375,
+              "success": true
+            }
+          ],
+          "parameters": {
+            "frequency_weight": 0.13892309089740826,
+            "lapse": 0.013279560199637627,
+            "persistence_trace_weight": 0.0,
+            "recency_weight": -0.08688434081888598,
+            "run_length_weight": 1.3396142671544675,
+            "stay_intercept": -0.8291592909434554,
+            "stay_value_weight": 1.6675697666060278,
+            "surprise_linear_weight": 1.5853549206130282,
+            "surprise_quadratic_weight": -1.0949723625149976,
+            "surprise_trace_weight": 0.0,
+            "trial_index_weight": 0.30586752861133365,
+            "uncertainty_sensitivity": 0.16571519093594422,
+            "value_sensitivity": 1.085743878438586
+          },
+          "validation": {
+            "accuracy": 0.7934195661411855,
+            "first_trials": 538,
+            "nll": 0.5736904069636253,
+            "stay_nll": 0.17929912716150298,
+            "stay_trials": 47902,
+            "switch_gate_nll": 0.7670430719194733,
+            "switch_nll": 1.7356945725438542,
+            "switch_target_nll": 0.9686515006243807,
+            "switch_trials": 15882,
+            "trials": 64322
+          }
+        },
+        "mixture": {
+          "validation": {
+            "accuracy": 0.7953655048039551,
+            "first_trials": 538,
+            "nll": 0.5688704980470908,
+            "stay_nll": 0.1758021676433234,
+            "stay_trials": 47902,
+            "switch_gate_nll": 0.7543857743886321,
+            "switch_nll": 1.7267212173940307,
+            "switch_target_nll": 0.9723354430053983,
+            "switch_trials": 15882,
+            "trials": 64322
+          }
+        }
+      },
+      "fold": 3,
+      "training_subjects": 551,
+      "validation_membership_sha256": "0587a6b010c252d064b0a48964eea56c96ded5adaf8617c1ddf008988506b0c9",
+      "validation_subjects": 138
+    },
+    {
+      "candidates": {
+        "baseline": {
+          "attempts": [
+            {
+              "iterations": 87,
+              "message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH",
+              "objective": 0.5651311364820701,
+              "seconds": 39.03099999999995,
+              "success": true
+            },
+            {
+              "iterations": 90,
+              "message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH",
+              "objective": 0.5651311364955343,
+              "seconds": 36.20300000000043,
+              "success": true
+            }
+          ],
+          "parameters": {
+            "frequency_weight": 0.0,
+            "lapse": 0.012285285626550048,
+            "persistence_trace_weight": 0.0,
+            "recency_weight": 0.0,
+            "run_length_weight": 1.288250445164092,
+            "stay_intercept": -0.6857220973626849,
+            "stay_value_weight": 1.8646502581968392,
+            "surprise_linear_weight": 1.5039313075777652,
+            "surprise_quadratic_weight": -1.0883225830837326,
+            "surprise_trace_weight": 0.0,
+            "trial_index_weight": 0.25869472449833497,
+            "uncertainty_sensitivity": 0.006641681554318751,
+            "value_sensitivity": 1.082547143746346
+          },
+          "validation": {
+            "accuracy": 0.7999560057457555,
+            "first_trials": 526,
+            "nll": 0.5593208003911807,
+            "stay_nll": 0.16728180030542308,
+            "stay_trials": 47185,
+            "switch_gate_nll": 0.781457194967827,
+            "switch_nll": 1.7495799020057805,
+            "switch_target_nll": 0.9681227070379538,
+            "switch_trials": 15176,
+            "trials": 62887
+          }
+        },
+        "history_full": {
+          "attempts": [
+            {
+              "iterations": 165,
+              "message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH",
+              "objective": 0.5557618470676555,
+              "seconds": 76.95299999999952,
+              "success": true
+            },
+            {
+              "iterations": 110,
+              "message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH",
+              "objective": 0.5557618456718862,
+              "seconds": 51.71900000000005,
+              "success": true
+            }
+          ],
+          "parameters": {
+            "frequency_weight": 0.14135874605301976,
+            "lapse": 0.01239851924431858,
+            "persistence_trace_weight": 0.5189916126898271,
+            "recency_weight": -0.1303669434781763,
+            "run_length_weight": 1.141765338624056,
+            "stay_intercept": 0.025282418672999442,
+            "stay_value_weight": 1.7142861633647757,
+            "surprise_linear_weight": 1.5238089683813645,
+            "surprise_quadratic_weight": -1.1806990961860355,
+            "surprise_trace_weight": 0.4383315238915186,
+            "trial_index_weight": 0.1304848586184368,
+            "uncertainty_sensitivity": 0.1897179210277139,
+            "value_sensitivity": 1.1021502582262594
+          },
+          "validation": {
+            "accuracy": 0.8000010601025119,
+            "first_trials": 526,
+            "nll": 0.553900753524025,
+            "stay_nll": 0.16878319459960867,
+            "stay_trials": 47185,
+            "switch_gate_nll": 0.7671174860029426,
+            "switch_nll": 1.722451951484829,
+            "switch_target_nll": 0.9553344654818864,
+            "switch_trials": 15176,
+            "trials": 62887
+          }
+        },
+        "history_gate": {
+          "attempts": [
+            {
+              "iterations": 120,
+              "message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH",
+              "objective": 0.5587733097663841,
+              "seconds": 48.61000000000058,
+              "success": true
+            },
+            {
+              "iterations": 123,
+              "message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH",
+              "objective": 0.5587733098315079,
+              "seconds": 51.90599999999995,
+              "success": true
+            }
+          ],
+          "parameters": {
+            "frequency_weight": 0.0,
+            "lapse": 0.011591232590123799,
+            "persistence_trace_weight": 0.5066368832411402,
+            "recency_weight": 0.0,
+            "run_length_weight": 1.0837673393238993,
+            "stay_intercept": 0.09558040267205743,
+            "stay_value_weight": 1.9025455709733659,
+            "surprise_linear_weight": 1.4104274327433195,
+            "surprise_quadratic_weight": -1.1657484945678336,
+            "surprise_trace_weight": 0.34265454932428324,
+            "trial_index_weight": 0.07786289699991433,
+            "uncertainty_sensitivity": 0.14093350606594063,
+            "value_sensitivity": 1.1076044973497152
+          },
+          "validation": {
+            "accuracy": 0.8002210313737338,
+            "first_trials": 526,
+            "nll": 0.5561817675612882,
+            "stay_nll": 0.17009770426306775,
+            "stay_trials": 47185,
+            "switch_gate_nll": 0.7623128143632181,
+            "switch_nll": 1.7278170668835546,
+            "switch_target_nll": 0.9655042525203363,
+            "switch_trials": 15176,
+            "trials": 62887
+          }
+        },
+        "history_r100": {
+          "attempts": [
+            {
+              "iterations": 162,
+              "message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH",
+              "objective": 0.5549785004441874,
+              "seconds": 73.10900000000038,
+              "success": true
+            },
+            {
+              "iterations": 157,
+              "message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH",
+              "objective": 0.5549785012670587,
+              "seconds": 71.48499999999967,
+              "success": true
+            }
+          ],
+          "parameters": {
+            "frequency_weight": 0.17088625900865692,
+            "lapse": 0.013691914589526363,
+            "persistence_trace_weight": 0.5205756714757497,
+            "recency_weight": 0.08433759386853085,
+            "run_length_weight": 1.112077378294406,
+            "stay_intercept": 0.013179214349051704,
+            "stay_value_weight": 1.6341665864351818,
+            "surprise_linear_weight": 0.9381941262787422,
+            "surprise_quadratic_weight": -0.7206918539320895,
+            "surprise_trace_weight": 0.8577017408543561,
+            "trial_index_weight": 0.0696521512728173,
+            "uncertainty_sensitivity": 0.9885831485357212,
+            "value_sensitivity": 1.075975192165496
+          },
+          "validation": {
+            "accuracy": 0.8012546313228489,
+            "first_trials": 526,
+            "nll": 0.5530540256019254,
+            "stay_nll": 0.16895870503439966,
+            "stay_trials": 47185,
+            "switch_gate_nll": 0.7706751963873636,
+            "switch_nll": 1.7183975472476984,
+            "switch_target_nll": 0.9477223508603349,
+            "switch_trials": 15176,
+            "trials": 62887
+          }
+        },
+        "history_regularized": {
+          "attempts": [
+            {
+              "iterations": 114,
+              "message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH",
+              "objective": 0.5626644619719454,
+              "seconds": 52.25,
+              "success": true
+            },
+            {
+              "iterations": 128,
+              "message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH",
+              "objective": 0.5626644616623487,
+              "seconds": 57.35900000000038,
+              "success": true
+            }
+          ],
+          "parameters": {
+            "frequency_weight": 0.1523773637847358,
+            "lapse": 0.005872851718358507,
+            "persistence_trace_weight": 0.47699429462759946,
+            "recency_weight": -0.10838149041103785,
+            "run_length_weight": 1.031765506928959,
+            "stay_intercept": -0.03969553230993234,
+            "stay_value_weight": 1.4692667161938833,
+            "surprise_linear_weight": 1.2063614164212457,
+            "surprise_quadratic_weight": -0.8726331517804821,
+            "surprise_trace_weight": 0.4204118296754788,
+            "trial_index_weight": 0.11065595993366469,
+            "uncertainty_sensitivity": 0.3424671035699256,
+            "value_sensitivity": 1.1734339114611527
+          },
+          "validation": {
+            "accuracy": 0.799913601645279,
+            "first_trials": 526,
+            "nll": 0.5550016196207681,
+            "stay_nll": 0.16824038529802124,
+            "stay_trials": 47185,
+            "switch_gate_nll": 0.7743340236221087,
+            "switch_nll": 1.7287014653963524,
+            "switch_target_nll": 0.9543674417742438,
+            "switch_trials": 15176,
+            "trials": 62887
+          }
+        },
+        "history_target": {
+          "attempts": [
+            {
+              "iterations": 104,
+              "message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH",
+              "objective": 0.5624305756195086,
+              "seconds": 47.01600000000053,
+              "success": true
+            },
+            {
+              "iterations": 126,
+              "message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH",
+              "objective": 0.5624305758934715,
+              "seconds": 59.10899999999947,
+              "success": true
+            }
+          ],
+          "parameters": {
+            "frequency_weight": 0.13497485772184933,
+            "lapse": 0.012534258312475994,
+            "persistence_trace_weight": 0.0,
+            "recency_weight": -0.08699617974233752,
+            "run_length_weight": 1.336569674501272,
+            "stay_intercept": -0.7808397263957252,
+            "stay_value_weight": 1.6767447204899824,
+            "surprise_linear_weight": 1.6207538646562731,
+            "surprise_quadratic_weight": -1.0915164699304123,
+            "surprise_trace_weight": 0.0,
+            "trial_index_weight": 0.3007007840561634,
+            "uncertainty_sensitivity": 0.17182128259620708,
+            "value_sensitivity": 1.0816594324940827
+          },
+          "validation": {
+            "accuracy": 0.7999427544643568,
+            "first_trials": 526,
+            "nll": 0.5570540360643876,
+            "stay_nll": 0.16629514716693553,
+            "stay_trials": 47185,
+            "switch_gate_nll": 0.7858966716002115,
+            "switch_nll": 1.7432544684343856,
+            "switch_target_nll": 0.9573577968341742,
+            "switch_trials": 15176,
+            "trials": 62887
+          }
+        },
+        "mixture": {
+          "validation": {
+            "accuracy": 0.8004171503384376,
+            "first_trials": 526,
+            "nll": 0.5543628259898721,
+            "stay_nll": 0.16713772823373185,
+            "stay_trials": 47185,
+            "switch_gate_nll": 0.7688849645469104,
+            "switch_nll": 1.7294827686720728,
+            "switch_target_nll": 0.9605978041251624,
+            "switch_trials": 15176,
+            "trials": 62887
+          }
+        }
+      },
+      "fold": 4,
+      "training_subjects": 552,
+      "validation_membership_sha256": "a5b127846c937b6ec2524076500b4277c10e46c1e4d68fc32b771b7a22627c1d",
+      "validation_subjects": 137
+    }
+  ],
+  "frozen_sha": "1f1899f80c65ad2523f153a8eacfd51eeccc449d",
+  "interpretation_limit": "Development CV; public data previously explored; intervals are not selection adjusted.",
+  "max_iterations": 250,
+  "pooled": {
+    "baseline": {
+      "improved_nll_folds": 0,
+      "metrics": {
+        "accuracy": 0.7968252728484546,
+        "first_trials": 2678,
+        "nll": 0.5696869088202954,
+        "stay_nll": 0.18030487479275675,
+        "stay_trials": 239937,
+        "switch_gate_nll": 0.7711939778491352,
+        "switch_nll": 1.7475127958816419,
+        "switch_target_nll": 0.9763188180325068,
+        "switch_trials": 77465,
+        "trials": 320080
+      },
+      "paired_subject_bootstrap": {
+        "accuracy": {
+          "delta": 0.0,
+          "percentile_95": [
+            0.0,
+            0.0
+          ]
+        },
+        "nll": {
+          "delta": 0.0,
+          "percentile_95": [
+            0.0,
+            0.0
+          ]
+        }
+      },
+      "qualifies": true
+    },
+    "history_full": {
+      "improved_nll_folds": 5,
+      "metrics": {
+        "accuracy": 0.7978213779888362,
+        "first_trials": 2678,
+        "nll": 0.5611843463903294,
+        "stay_nll": 0.17874601878542978,
+        "stay_trials": 239937,
+        "switch_gate_nll": 0.7539194167719363,
+        "switch_nll": 1.7172091368258933,
+        "switch_target_nll": 0.9632897200539571,
+        "switch_trials": 77465,
+        "trials": 320080
+      },
+      "paired_subject_bootstrap": {
+        "accuracy": {
+          "delta": 0.0009961051403815713,
+          "percentile_95": [
+            0.00010075633813457491,
+            0.0018913470224077443
+          ]
+        },
+        "nll": {
+          "delta": -0.008502562429966274,
+          "percentile_95": [
+            -0.009957476024280943,
+            -0.007097026172079535
+          ]
+        }
+      },
+      "qualifies": true
+    },
+    "history_gate": {
+      "improved_nll_folds": 5,
+      "metrics": {
+        "accuracy": 0.7979083354161459,
+        "first_trials": 2678,
+        "nll": 0.5640335199109843,
+        "stay_nll": 0.18000951657998596,
+        "stay_trials": 239937,
+        "switch_gate_nll": 0.7513813419940791,
+        "switch_nll": 1.725068216283182,
+        "switch_target_nll": 0.9736868742891029,
+        "switch_trials": 77465,
+        "trials": 320080
+      },
+      "paired_subject_bootstrap": {
+        "accuracy": {
+          "delta": 0.0010830625676914105,
+          "percentile_95": [
+            0.00027409277772212767,
+            0.001948434840391329
+          ]
+        },
+        "nll": {
+          "delta": -0.005653388909311148,
+          "percentile_95": [
+            -0.007060063772626138,
+            -0.0043814069515219125
+          ]
+        }
+      },
+      "qualifies": true
+    },
+    "history_r100": {
+      "improved_nll_folds": 5,
+      "metrics": {
+        "accuracy": 0.7987753061734567,
+        "first_trials": 2678,
+        "nll": 0.5603962341041252,
+        "stay_nll": 0.1785880190296329,
+        "stay_trials": 239937,
+        "switch_gate_nll": 0.7579730158239231,
+        "switch_nll": 1.714442093733381,
+        "switch_target_nll": 0.956469077909458,
+        "switch_trials": 77465,
+        "trials": 320080
+      },
+      "paired_subject_bootstrap": {
+        "accuracy": {
+          "delta": 0.001950033325002083,
+          "percentile_95": [
+            0.001015374583715934,
+            0.0029279491422740927
+          ]
+        },
+        "nll": {
+          "delta": -0.009290674716170077,
+          "percentile_95": [
+            -0.010793351388990999,
+            -0.00789404593463524
+          ]
+        }
+      },
+      "qualifies": true
+    },
+    "history_regularized": {
+      "improved_nll_folds": 5,
+      "metrics": {
+        "accuracy": 0.7975547779721738,
+        "first_trials": 2678,
+        "nll": 0.5622378844326266,
+        "stay_nll": 0.17774974127783075,
+        "stay_trials": 239937,
+        "switch_gate_nll": 0.7617657430388708,
+        "switch_nll": 1.7246481130463716,
+        "switch_target_nll": 0.9628823700075008,
+        "switch_trials": 77465,
+        "trials": 320080
+      },
+      "paired_subject_bootstrap": {
+        "accuracy": {
+          "delta": 0.0007295051237190704,
+          "percentile_95": [
+            -0.00014441718723842104,
+            0.0016133562936961904
+          ]
+        },
+        "nll": {
+          "delta": -0.007449024387668844,
+          "percentile_95": [
+            -0.009025935238915315,
+            -0.006051857848734511
+          ]
+        }
+      },
+      "qualifies": true
+    },
+    "history_target": {
+      "improved_nll_folds": 5,
+      "metrics": {
+        "accuracy": 0.7966169915854368,
+        "first_trials": 2678,
+        "nll": 0.5670868478996393,
+        "stay_nll": 0.17963003620568493,
+        "stay_trials": 239937,
+        "switch_gate_nll": 0.7733900502139543,
+        "switch_nll": 1.738859742845854,
+        "switch_target_nll": 0.9654696926318996,
+        "switch_trials": 77465,
+        "trials": 320080
+      },
+      "paired_subject_bootstrap": {
+        "accuracy": {
+          "delta": -0.00020828126301757882,
+          "percentile_95": [
+            -0.0006969351726987524,
+            0.0003097389270174819
+          ]
+        },
+        "nll": {
+          "delta": -0.002600060920656097,
+          "percentile_95": [
+            -0.0033155850659402457,
+            -0.001994877163048733
+          ]
+        }
+      },
+      "qualifies": false
+    },
+    "mixture": {
+      "improved_nll_folds": 5,
+      "metrics": {
+        "accuracy": 0.797920832291927,
+        "first_trials": 2678,
+        "nll": 0.5631999616924466,
+        "stay_nll": 0.17860963366152524,
+        "stay_trials": 239937,
+        "switch_gate_nll": 0.7571835537613008,
+        "switch_nll": 1.7259599531090664,
+        "switch_target_nll": 0.9687763993477652,
+        "switch_trials": 77465,
+        "trials": 320080
+      },
+      "paired_subject_bootstrap": {
+        "accuracy": {
+          "delta": 0.0010955594434724652,
+          "percentile_95": [
+            0.0005862775750232678,
+            0.0016448311202145402
+          ]
+        },
+        "nll": {
+          "delta": -0.006486947127849033,
+          "percentile_95": [
+            -0.00735341367567173,
+            -0.005642788519238943
+          ]
+        }
+      },
+      "qualifies": true
+    }
+  },
+  "protocol": "labbook/2026-08-27-final-development.md",
+  "schema_version": 1,
+  "seed": 20260827,
+  "selected": "history_r100",
+  "subjects": 689,
+  "trajectories": 2678
+}

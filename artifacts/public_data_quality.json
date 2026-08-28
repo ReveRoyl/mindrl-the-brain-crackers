@@ -1,0 +1,21 @@
+{
+  "trajectories": 2678,
+  "subjects": 689,
+  "trials": 320080,
+  "categories": {
+    "first": 2678,
+    "stay": 239937,
+    "switch": 77465
+  },
+  "action_count_distribution": {
+    "4": 2678
+  },
+  "duplicate_full_records": 0,
+  "missing_trajectory_ids": 0,
+  "duplicate_nonmissing_trajectory_ids": 0,
+  "invalid_actions": 0,
+  "missing_rewards": 0,
+  "nonfinite_rewards": 0,
+  "empty_trajectories": 0,
+  "data_sha256": "2a37588cfcbbc7e10df6b1eff22a23ed29a15bef490c18ed36811e27090f4230"
+}

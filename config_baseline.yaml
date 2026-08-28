@@ -6,9 +6,9 @@ runtime:
   requires_external_api: false
 
 model:
-  name: history_stay_switch_kalman
+  name: stay_switch_kalman_v0_2
   type: two_stage_cognitive_model
-  fitted_params_path: artifacts/fitted_params_final.json
+  fitted_params_path: artifacts/fitted_params.json
 
   # Fallback values and optimizer starting points used when artifact loading
   # is disabled by fit_public.py. Frozen artifact values take precedence
@@ -28,10 +28,6 @@ model:
   run_length_weight: 0.0
   trial_index_weight: 0.0
   lapse: 0.02
-  persistence_trace_weight: 0.0
-  surprise_trace_weight: 0.0
-  frequency_weight: 0.0
-  recency_weight: 0.0
 
 evaluation:
   allow_online_state_updates: true

@@ -12,9 +12,9 @@ submission:
   visibility: internal
   method_family: cognitive_reinforcement_learning_model
   short_description: >
-    A two-stage cognitive bandit model that separates the decision to repeat
-    the previous action from the value- and uncertainty-guided choice of a
-    switch target.
+    A fixed-noise Kalman choice model with trajectory-local reward and choice
+    history, expressed as a dynamic stay gate and conditional switch-target
+    probabilities. Global coefficients are fitted offline on public data.
   repo_url: https://github.com/mindrl-challenge/submission-the-brain-crackers.git
   agent_path: agent.py
   config_path: config.yaml
@@ -39,7 +39,7 @@ artifacts:
   external_weights: null
   notes: >
     Frozen global parameters are stored locally in
-    artifacts/fitted_params.json; no external download is required.
+    artifacts/fitted_params_final.json; no external download is required.
 
 policy:
   ip_owner: submitting_team

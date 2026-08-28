@@ -1,0 +1,28 @@
+{
+  "trajectories": 2678,
+  "trials": 320080,
+  "nll": 0.5601038382882544,
+  "accuracy": 0.7988830917270853,
+  "categories": {
+    "first": {
+      "trials": 2678,
+      "nll": 1.386294361119812
+    },
+    "stay": {
+      "trials": 239937,
+      "nll": 0.17833333720989472
+    },
+    "switch": {
+      "trials": 77465,
+      "nll": 1.7140227758355802
+    }
+  },
+  "switch_gate_nll": 0.7578202792425731,
+  "switch_target_nll": 0.9562024965930213,
+  "elapsed_seconds": 26.811847099999795,
+  "python_version": "3.10.20",
+  "data_sha256": "2a37588cfcbbc7e10df6b1eff22a23ed29a15bef490c18ed36811e27090f4230",
+  "config_sha256": "d945c805af9e6c31140f34a5eb72aa51198a84b8afcff82f542f2d06cc3056ba",
+  "agent_sha256": "8a23eceac2029aef3f5d256e1012e6aec185420892059a3fb43456020035a196",
+  "parameters_sha256": "62dfebd8febd7113c0d69fd7fe5b5e4d72ac382a06c3b1423ea4a1538e25fded"
+}

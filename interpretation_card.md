@@ -1,365 +1,283 @@
-# Interpretation Card - Stay-Switch Kalman Agent
+# Interpretation Card — History-Augmented Stay-Switch Kalman
 
-## 1. Submission summary
+## 1. Submission and claim
 
-The Stay-Switch Kalman Agent is a cognitive reinforcement-learning model for
-one-step-ahead prediction of human choices. It represents each available action
-with a Gaussian belief over latent value and updates that belief after observed
-rewards. Its decision rule separates two related questions:
+This choice-only model predicts the next human action from previously revealed
+actions and rewards. It combines fixed-noise Kalman value beliefs with
+trajectory-local reward and choice history. A stay gate and a conditional
+distribution over alternatives make the probability calculation inspectable.
 
-1. Will the participant repeat the previous action?
-2. If the participant switches, which alternative action will they choose?
+The claim is predictive and descriptive. The factorization is **not evidence
+for two separate psychological stages**: an exactly matched single softmax
+produces the same probabilities (audit Q6). Parameter names do not establish
+unique psychological causes.
 
-This separation is the main change from the earlier StoVol-Lite model, which
-placed value, uncertainty, and an accumulating choice trace into one
-multi-action softmax. The submitted model uses no neural network, external API,
-future observation, or optimizer step during evaluation.
+The standalone [agent.py](agent.py) uses only the Python standard library.
+There is no neural network, external API, participant lookup, future observation
+or optimizer step at evaluation time. Global coefficients are read at
+construction from [the final parameter artifact](artifacts/fitted_params_final.json).
 
-## 2. Scope of the claim
+## 2. Mechanism map
 
-The model makes the following predictive claim:
+| Component | Implementation and interpretation boundary |
+|---|---|
+| Value learning | A Gaussian mean and variance for each action; reward updates use a Kalman gain. The noise variances are fixed assumptions. |
+| Value and uncertainty | Relative value and standard deviation contribute to action utilities. This does not uniquely identify directed exploration. |
+| Choice-history utilities | Centered log frequency and negative log age since selection affect both switch-target ranking and the gate's base log-odds. |
+| Dynamic persistence | Last signed/squared surprise, run length, trial count, smoothed past stay frequency and a surprise trace enter the gate. |
+| Lapse | A uniform probability mixture; it may absorb unmodeled behavior rather than a distinct psychological lapse process. |
+| State scope | Beliefs and all history accumulators reset for every trajectory. No state is shared across subjects or trajectories. |
 
-> Human choice persistence and switch-target selection are better represented
-> as distinct but coupled decisions than as a single softmax with a shared
-> perseveration term.
+## 3. Formal model
 
-The public-data results support this architecture as a predictive model. They
-do not establish that the fitted variables are uniquely identifiable
-psychological processes, and they do not constitute a hidden-evaluation score.
+### 3.1 Beliefs and outcome updates
 
-## 3. Mechanism map
+At decision $t$, $Q_{t,a}$ and $V_{t,a}$ are the mean and variance **before**
+the current reward is assimilated. For observed action $a_t$ and reward $r_t$:
 
-| Cognitive concept | Model implementation | Status relative to StoVol-Lite v0.1 |
-|---|---|---|
-| Latent action value | A Gaussian mean is maintained for each action and updated from its observed reward. | Retained |
-| Belief uncertainty | An action-specific variance contracts after observation and propagates by fixed process variance before the next choice. | Retained, but no longer adapted by the previous heuristic |
-| Value-guided choice | Standardized posterior means enter action utilities through `value_sensitivity`. | Retained |
-| Directed exploration | Relative posterior standard deviations enter utilities through `uncertainty_sensitivity`. | Retained |
-| Stay versus switch | A logistic gate assigns probability to repeating the previous action. | New |
-| Switch-target selection | Conditional on switching, a softmax compares only the other available actions. | New |
-| Reward surprise | Signed and squared standardized reward prediction error enter the stay gate. | Reformulated |
-| Perseveration | Log run length enters only the stay gate. | Replaces the accumulating choice trace |
-| Time-on-task trend | Log trial count allows a gradual within-trajectory change in stay tendency. | New |
-| Lapse | A small uniform mixture prevents zero probabilities and represents occasional task-independent responding. | Retained |
-| Adaptive stochasticity | No online parameter or noise-variance adaptation is performed. | Removed after ablation |
+$$e_t = r_t-Q_{t,a_t}, \qquad K_t = \frac{V_{t,a_t}}{V_{t,a_t}+\sigma_{\mathrm{obs}}^2}.$$
 
-The fitted global parameters are loaded once from
-`artifacts/fitted_params.json`. During evaluation, only trajectory-local
-beliefs, previous reward surprise, run length, and trial count change.
+$$Q_{t+1,a_t}=Q_{t,a_t}+K_t e_t, \qquad V^{\mathrm{post}}_{t,a_t}=(1-K_t)V_{t,a_t}.$$
 
-## 4. Formal model
+Unselected means and posterior variances are unchanged. Before the next
+decision, every action receives fixed process variance:
 
-### 4.1 Action-value beliefs
+$$V_{t+1,a}=\min\left(V^{\mathrm{post}}_{t,a}+\sigma_{\mathrm{proc}}^2,V_{\max}\right).$$
 
-For each available action $a$, the agent maintains a Gaussian belief with mean
-$Q_{t,a}$ and variance $V_{t,a}$. When action $a_t$ produces reward $r_t$, the
-innovation and Kalman gain are
+The standardized surprise is computed from the pre-update belief:
 
-$$e_t = r_t - Q_{t,a_t}.$$
+$$\delta_t=\frac{e_t}{\sqrt{V_{t,a_t}+\sigma_{\mathrm{obs}}^2}}.$$
 
-$$K_t = \frac{V_{t,a_t}}{V_{t,a_t} + \sigma_{\mathrm{obs}}^2}.$$
+Missing or non-finite rewards leave the selected mean unchanged and set
+$\delta_t=0$. Variance propagation and observed-choice history updates still
+occur; the surprise trace decays as specified below.
 
-The selected action is updated by
+### 3.2 Value, uncertainty and choice-history utilities
 
-$$Q_{t+1,a_t} = Q_{t,a_t} + K_t e_t.$$
+For available-action set $A$, let $\bar Q_t$ and $\bar S_t$ be the across-action
+means of $Q_{t,a}$ and $\sqrt{V_{t,a}}$. Define the common scale:
 
-$$V^{\mathrm{post}}_{t,a_t} = (1-K_t)V_{t,a_t}.$$
+$$D_t=\sqrt{\frac{1}{|A|}\sum_{a\in A}\left[(Q_{t,a}-\bar Q_t)^2+V_{t,a}\right]}.$$
 
-Before the next decision, every action variance receives the fixed process
-variance:
+$$z^Q_{t,a}=\frac{Q_{t,a}-\bar Q_t}{D_t}, \qquad z^U_{t,a}=\frac{\sqrt{V_{t,a}}-\bar S_t}{D_t}.$$
 
-$$V_{t+1,a} = \min\left(V^{\mathrm{post}}_{t,a} + \sigma_{\mathrm{proc}}^2, V_{\max}\right).$$
+Let $n_{t,a}$ count past selections of action $a$. Let $d_{t,a}$ be the number
+of completed trials since its last selection: zero immediately after selection,
+or $t$ if it has never been selected. Define $F_{t,a}$ by centering
+$\log(1+n_{t,a})$ across actions and $C_{t,a}$ by centering
+$-\log(1+d_{t,a})$ across actions. Then:
 
-For an unselected action, its current variance serves as
-$V^{\mathrm{post}}_{t,a}$. Missing or non-finite rewards do not update the
-selected mean; reward surprise is set to zero, and uncertainty still
-propagates.
+$$u_{t,a}=\beta_Q z^Q_{t,a}+\beta_U z^U_{t,a}+\beta_F F_{t,a}+\beta_C C_{t,a}.$$
 
-The standardized reward surprise retained for the next choice is
+$$b_{t,a}=\frac{\exp(u_{t,a})}{\sum_{j\in A}\exp(u_{t,j})}.$$
 
-$$\delta_t = \frac{r_t-Q_{t,a_t}}{\sqrt{V_{t,a_t}+\sigma_{\mathrm{obs}}^2}}.$$
+All features are computed before the current observed action and reward.
 
-All quantities on the right-hand side are evaluated before assimilating the
-current reward.
+### 3.3 Stay gate
 
-### 4.2 Standardized value and uncertainty features
+After the first trial, let $l=a_{t-1}$ be the last action, $R_t$ its current
+run length, and $t$ the number of completed trials. With past stay and switch
+counts $N_t^{\mathrm{stay}}$ and $N_t^{\mathrm{switch}}$, the smoothed persistence
+feature and recent-surprise trace are:
 
-Let $\bar Q_t$ be the mean action value, and let $\bar S_t$ be the mean
-posterior standard deviation across the $A_t$ available actions. The common
-scale is
+$$H_t=\log\left(\frac{N_t^{\mathrm{stay}}+2}{N_t^{\mathrm{switch}}+2}\right).$$
 
-$$D_t = \sqrt{\frac{1}{|A_t|}\sum_{a\in A_t}\left[(Q_{t,a}-\bar Q_t)^2 + V_{t,a}\right]}.$$
+$$E_{t+1}=0.8E_t+0.2\delta_t, \qquad E_0=0.$$
 
-The value and relative-uncertainty features are
+The first observed action adds no stay/switch count. These are within-trajectory
+history summaries, not online fitting of global coefficients.
 
-$$z^Q_{t,a} = \frac{Q_{t,a}-\bar Q_t}{D_t}.$$
+$$\begin{aligned} g_t={}&b_0+b_Q\,\mathrm{logit}(b_{t,l})+b_{\delta}\delta_{t-1}+b_{\delta^2}\delta_{t-1}^2\\ &+b_R\log(1+R_t)+b_T\log(1+t)+b_H H_t+b_E E_t. \end{aligned}$$
 
-$$z^U_{t,a} = \frac{\sqrt{V_{t,a}}-\bar S_t}{D_t}.$$
+$$s_t=\frac{1}{1+\exp(-g_t)}.$$
 
-The base utility and base choice distribution are
+The gate-only terms alter persistence without changing the relative ranking
+among alternatives. Frequency and recency utilities also enter the base
+log-odds, so their effects are not confined to switch targets.
 
-$$u_{t,a} = \beta_Q z^Q_{t,a} + \beta_U z^U_{t,a}.$$
+### 3.4 Returned probabilities
 
-$$b_{t,a} = \frac{\exp(u_{t,a})}{\sum_{j\in A_t}\exp(u_{t,j})}.$$
+For $a\ne l$, define the conditional alternative distribution:
 
-### 4.3 Stay-switch gate
+$$c_{t,a}=\frac{\exp(u_{t,a})}{\sum_{j\in A\setminus\{l\}}\exp(u_{t,j})}.$$
 
-After the first trial, let $a_{t-1}$ denote the previous action, $R_t$ the
-current run length, and $t$ the number of completed trials. The stay-gate logit
-is
+$$\tilde p_{t,a}=\begin{cases}s_t,&a=l,\\(1-s_t)c_{t,a},&a\ne l.\end{cases}$$
 
-$$\begin{aligned} g_t ={}& b_0 + b_Q\,\mathrm{logit}(b_{t,a_{t-1}}) + b_{\delta}\delta_{t-1} \\ &+ b_{\delta^2}\delta_{t-1}^2 + b_R\log(1+R_t) + b_T\log(1+t). \end{aligned}$$
+$$p_{t,a}=(1-\lambda)\tilde p_{t,a}+\frac{\lambda}{|A|}.$$
 
-The probability of repeating the previous action is
+The first prediction is uniform: all beliefs and history features are initially
+symmetric, and the model does not use other pre-choice metadata. A one-action
+context returns probability one. For numerical safety, variances and $D_t$ are
+floored at $10^{-12}$, base probabilities entering the logit are clipped to
+$[10^{-9},1-10^{-9}]$, and returned probabilities are normalized.
 
-$$p_t^{\mathrm{stay}} = \mathrm{sigmoid}(g_t).$$
+## 4. Final fixed parameters
 
-This gate allows value, reward surprise, choice history, and within-trajectory
-time to affect persistence without changing the ranking among switch targets.
-The trial-count coefficient is a descriptive time trend; it should not be
-interpreted as direct evidence of fatigue or learning without a separate test.
-
-### 4.4 Conditional switch-target choice
-
-If the participant switches, the conditional probability of selecting
-$a\ne a_{t-1}$ is
-
-$$c_{t,a} = \frac{\exp(u_{t,a})}{\sum_{j\in A_t\setminus\{a_{t-1}\}}\exp(u_{t,j})}.$$
-
-Before lapse mixing, the action probabilities are
-
-$$\tilde p_{t,a} = \begin{cases} p_t^{\mathrm{stay}}, & a=a_{t-1},\\ (1-p_t^{\mathrm{stay}})c_{t,a}, & a\ne a_{t-1}. \end{cases}$$
-
-With lapse parameter $\lambda$, the returned distribution is
-
-$$p_{t,a} = (1-\lambda)\tilde p_{t,a} + \frac{\lambda}{|A_t|}.$$
-
-On the first trial, all action beliefs are identical, so the model returns a
-uniform distribution.
-
-## 5. Frozen parameter values
-
-The submitted artifact contains the following final parameters:
+Thirteen decision coefficients are fitted offline. Initial beliefs, q=25 and
+the variance cap are fixed; r=100 was selected from the limited development
+comparison with r=200. Full precision is stored in the parameter artifact.
 
 | Parameter | Value | Operational role |
 |---|---:|---|
-| `initial_value` | 50.000000 | Initial mean reward belief |
-| `initial_variance` | 400.000000 | Initial uncertainty |
-| `process_variance` | 25.000000 | Fixed trial-to-trial uncertainty growth |
-| `observation_variance` | 200.000000 | Fixed reward-observation noise |
-| `value_sensitivity` | 1.097430 | Value contribution to action utility |
-| `uncertainty_sensitivity` | 0.021051 | Relative-uncertainty contribution |
-| `stay_intercept` | -0.738172 | Baseline stay-gate intercept |
-| `stay_value_weight` | 1.874595 | Effect of previous-action base log-odds |
-| `surprise_linear_weight` | 1.489112 | Linear reward-surprise effect |
-| `surprise_quadratic_weight` | -1.100678 | Nonlinear reward-surprise effect |
-| `run_length_weight` | 1.298749 | Effect of current choice-run length |
-| `trial_index_weight` | 0.267720 | Within-trajectory time trend |
-| `lapse` | 0.013091 | Uniform random-response mixture |
-| `variance_ceiling` | 10000.000000 | Numerical variance cap |
+| `initial_value` | 50.000000 | Initial reward mean |
+| `initial_variance` | 400.000000 | Initial belief variance |
+| `process_variance` | 25.000000 | Fixed per-trial variance increment |
+| `observation_variance` | 100.000000 | Fixed observation variance |
+| `variance_ceiling` | 10000.000000 | Variance cap |
+| `value_sensitivity` | 1.086762 | Value utility coefficient |
+| `uncertainty_sensitivity` | 1.000137 | Relative-uncertainty utility coefficient |
+| `stay_intercept` | -0.052226 | Gate intercept |
+| `stay_value_weight` | 1.640779 | Previous-action base log-odds |
+| `surprise_linear_weight` | 0.915180 | Last signed surprise |
+| `surprise_quadratic_weight` | -0.728861 | Last squared surprise |
+| `run_length_weight` | 1.129567 | Current run length |
+| `trial_index_weight` | 0.079031 | Completed trial count |
+| `persistence_trace_weight` | 0.501821 | Smoothed past persistence |
+| `surprise_trace_weight` | 0.871108 | Recent surprise trace |
+| `frequency_weight` | 0.167488 | Action selection frequency |
+| `recency_weight` | 0.089782 | Action selection recency |
+| `lapse` | 0.014358 | Uniform mixture |
 
-The small fitted uncertainty coefficient indicates limited public-data
-support for directed exploration in this specification. Its presence should
-not be interpreted as strong evidence that uncertainty drives behavior.
+Positive coefficients describe associations conditional on the other terms.
+The uncertainty coefficient is not, by itself, evidence of a uniquely
+identified exploration process. History terms can trade off with run length,
+time and uncertainty; recovery of the added coefficients has not been tested.
 
-## 6. Model evolution and ablation evidence
+## 5. Public-data development evidence
 
-### 6.1 What changed from StoVol-Lite v0.1
+The public input contains 2,678 trajectories, 689 subjects and 320,080 trials.
+The [executed data-check notebook](analysis/final_data_checks.ipynb) verifies
+IDs, duplicates, rewards, actions and metric denominators. No records were
+excluded. The input hash is recorded with the results.
 
-StoVol-Lite v0.1 used a single four-action softmax combining Kalman value,
-relative uncertainty, an accumulating choice trace, reward-stay bias, and a
-heuristic adaptive-noise rule. Stay-Switch Kalman v0.2:
+The [prespecified development protocol](labbook/2026-08-27-final-development.md)
+uses five subject-disjoint folds, seed 20260827, and identical trial weights
+for every candidate. Each fold fits on its training subjects only, with two
+fixed starts, bounded L-BFGS-B and at most 250 iterations per start. The
+all-public fitted parameters are never used as fold initialization. Selection
+requires lower pooled NLL, no pooled accuracy loss and NLL improvement in at
+least four folds. The candidate list and all fold results, including
+unsuccessful alternatives, are in [the complete CV record](artifacts/final_development_cv.json).
 
-- retains Kalman value learning and uncertainty tracking;
-- replaces the accumulating choice trace with log run length;
-- confines perseveration to a stay-switch gate;
-- models the switch target conditionally among non-previous actions;
-- replaces simple reward-stay bias with signed and squared standardized
-  reward surprise;
-- adds a descriptive log trial-count term; and
-- removes heuristic online adaptation of process and observation noise.
-
-The architecture therefore changed at the policy level; this is not only a
-parameter retuning of the earlier model.
-
-### 6.2 Adaptive-noise ablation
-
-The earlier model attempted to reallocate recent prediction error between
-process noise and observation noise during evaluation. A local public-data
-ablation compared that specification with an otherwise matched version whose
-`noise_adaptation_rate` was set to zero:
-
-| Developmental comparison | Mean NLL |
-|---|---:|
-| Full StoVol-Lite v0.1 | 0.641966 |
-| StoVol-Lite with adaptive noise disabled | 0.638966 |
-| Fixed-noise minus adaptive-noise NLL | -0.003000 |
-
-Lower NLL is better. Under this comparison, disabling the tested adaptive-noise
-rule slightly improved prediction. The rule was therefore not retained in
-v0.2; process and observation variances are instead selected offline and
-frozen before evaluation.
-
-This is a negative result about one particular heuristic, not evidence that
-human participants never adapt to volatility or that volatility and choice
-stochasticity are psychologically absent. The comparison used public data and
-should be treated as developmental evidence rather than an independent
-confirmatory test.
-
-### 6.3 Predictive comparison
-
-| Public-data diagnostic | StoVol-Lite v0.1 | Stay-Switch Kalman v0.2 |
+| Development candidate | Pooled out-of-fold NLL | Accuracy |
 |---|---:|---:|
-| Mean NLL | 0.641966 | 0.569410 |
-| Official-convention accuracy | 79.0912% | 79.7015% |
-| Geometric mean probability assigned to the observed action | 52.63% | 56.59% |
+| Refitted baseline | 0.569687 | 79.6825% |
+| History gate only | 0.564034 | 79.7908% |
+| History utility only | 0.567087 | 79.6617% |
+| Combined history, r=200 | 0.561184 | 79.7821% |
+| Combined history, stronger L2 | 0.562238 | 79.7555% |
+| Combined history, r=100 (selected) | 0.560396 | 79.8775% |
+| Fixed 50:50 mixture | 0.563200 | 79.7921% |
 
-The approximately 11.3% reduction in public-data NLL is consistent with better
-probability calibration, especially for the stay-switch decision. These
-numbers are not hidden-test results.
+The selected candidate improves NLL in all five folds. Relative to the refitted
+baseline, pooled NLL changes by -0.009291 and accuracy by +0.1950 percentage
+points. Paired subject-bootstrap 95% intervals are [-0.010793, -0.007894] for
+NLL and [+0.1015, +0.2928] percentage points for accuracy (2,000 resamples).
 
-## 7. Fitting and public-data evidence
+These are descriptive intervals conditional on the fitted out-of-fold
+predictions, not selection-adjusted tests or intervals covering training
+uncertainty. This public dataset and the baseline have already been explored;
+the CV was itself used to select the final candidate. It is not an independent
+final test or a guarantee of hidden-task improvement.
 
-The recorded development procedure used a deterministic 80/20 split by
-anonymized `subject_id` with seed 2026. No subject appeared in both
-development partitions. Decision parameters were fitted by bounded maximum
-likelihood with a small L2 penalty. A small grid over fixed process and
-observation variances was compared by validation NLL. After selecting those
-variance values, decision parameters were refitted on all public trajectories
-and frozen in `artifacts/fitted_params.json`.
+After selection, the model was refitted on all public data and frozen:
 
-| Recorded evaluation | Subjects | Trials | Mean NLL | Official-convention accuracy |
-|---|---:|---:|---:|---:|
-| Subject-disjoint training partition | 551 | 256,455 | 0.577997 | 79.3521% |
-| Subject-disjoint validation partition | 138 | 63,625 | 0.534969 | 81.0158% |
-| Final fit evaluated on all public data | 689 | 320,080 | 0.569410 | 79.7015% |
-
-The validation partition happened to be easier than the training partition,
-as indicated by both lower NLL and higher accuracy. In addition, the split was
-used during model development and variance selection. Its result is therefore
-a development estimate, not a fully independent final estimate.
-
-For the final public fit:
-
-| Trial category | Trials | Mean NLL |
+| Full-public fit diagnostic | Mean NLL | Accuracy |
 |---|---:|---:|
-| First trial | 2,678 | 1.386294 |
-| Stay trial | 239,937 | 0.180043 |
-| Switch trial | 77,465 | 1.747178 |
+| Preserved checkpoint artifact | 0.569410 | 79.7015% |
+| Final artifact, sequential runtime evaluation | 0.560104 | 79.8883% |
 
-Most predictive performance comes from stay trials. Switch-target prediction
-remains the primary empirical weakness and the most promising focus for a
-future challenger model.
+The [final sequential evaluation](artifacts/final_public_evaluation.json) uses
+prediction before update, natural-log NLL, and fractional accuracy credit for
+**exact** tied maxima, matching the official convention. The full-public
+scores are in-sample diagnostics, not generalization estimates.
 
-For reference, uniform prediction over four actions has mean NLL
-$-\log(0.25)=1.386294$. The final mean NLL of 0.569410 corresponds to a
-geometric mean probability of approximately
-$\exp(-0.569410)=0.5659$ assigned to the observed action.
+| Trial category | Trials | Final mean NLL |
+|---|---:|---:|
+| First | 2,678 | 1.386294 |
+| Stay | 239,937 | 0.178333 |
+| Switch | 77,465 | 1.714023 |
 
-## 8. Why the model is cognitive
+Using final post-lapse probabilities, switch NLL decomposes into 0.757820 for
+switch occurrence and 0.956202 for the conditional target. Both components
+matter; the full switch loss must not be attributed to target choice alone.
+Uniform four-action prediction has NLL 1.386294 and fractional accuracy 25%.
 
-The model contains explicit, inspectable latent beliefs and a fixed
-trial-by-trial update rule. Each fitted parameter has an operational mapping
-to value learning, uncertainty, reward surprise, persistence, time trend, or
-lapse. Every prediction can be reconstructed from the current trajectory's
-previously revealed observations.
+## 6. Audits and interpretation boundaries
 
-The cognitive interpretation remains conditional:
+Both formal audits concern checkpoint
+**1f1899f80c65ad2523f153a8eacfd51eeccc449d**, not the post-freeze model.
 
-- similar predictions may be produced by simpler choice kernels or
-  win-stay-lose-shift rules;
-- fitted parameters may trade off against one another;
-- predictive superiority alone does not establish psychological uniqueness;
-  and
-- the trial-count effect is descriptive rather than a direct measure of a
-  named mental process.
+**Q6 — equivalent parameterization.** Keep $v_{t,a}=u_{t,a}$ for $a\ne l$ and set:
 
-## 9. Alternative explanations and discriminative tests
+$$v_{t,l}=g_t+\log\left(\sum_{a\ne l}\exp(u_{t,a})\right).$$
 
-| Alternative explanation | Useful discriminative test |
-|---|---|
-| Choice persistence alone explains the result. | Compare against a reward-free run-length or choice-kernel model on subject-held-out data. |
-| Win-stay-lose-shift is sufficient. | Compare the continuous surprise terms with a binary previous-outcome rule. |
-| Standard Q-learning is sufficient. | Replace Kalman beliefs with fixed-learning-rate Q values while retaining the same two-stage policy. |
-| The two-stage policy is unnecessary. | Compare against a single multi-action softmax using identical Kalman beliefs and matched parameter complexity. |
-| Uncertainty does not contribute. | Set `uncertainty_sensitivity` to zero and compare held-out NLL. |
-| Stable participant subtypes explain persistence. | Evaluate a prespecified hierarchical or mixture model on unseen participants. |
+A single softmax over $v$ gives exactly the same probabilities before lapse;
+the same lapse preserves equality. The auditors' matched representations both
+have validation NLL 0.534969. Their restricted constant-repeat control scores
+0.610540, but also removes dynamic predictors, so it cannot isolate a
+psychological benefit of two stages. We independently check the identity
+numerically; we did not repeat the full audit grid.
+See [issue #2](https://github.com/mindrl-challenge/submission-the-brain-crackers/issues/2)
+and [pinned evidence](https://github.com/mindrl-challenge/submission-wl/blob/b99c7a72a4d50c6dfdf61afb1f9102b0617d537c/audits/the_brain_crackers/examining-two-stage-theory/outputs/comparison.json).
 
-Mechanism-specific probes should also verify that:
+**Q7 — conditional recovery.** Across 100 synthetic datasets (each 100
+trajectories, 98 participants and 11,957 trials), eight frozen-model
+coefficients have Pearson r approximately 0.954–0.993; lapse is weaker at
+0.813. There are 99 clean fits and one optimizer warning. We independently
+recalculated correlations and MSE from the pinned estimates and verified their
+generating values, without regenerating simulations or repeating the 800
+full/subset fits. This is same-model recovery with q=25 and r=200 fixed, over
+the tested parameter ranges. It neither identifies noise variances nor
+establishes recovery for the four added coefficients or the final r=100 model.
+See [issue #3](https://github.com/mindrl-challenge/submission-the-brain-crackers/issues/3),
+[pinned evidence](https://github.com/mindrl-challenge/submission-wl/blob/b99c7a72a4d50c6dfdf61afb1f9102b0617d537c/audits/the_brain_crackers/testing-parameter-recovery/outputs/recovery_analysis/recovery_analysis.json)
+and [our arithmetic check](artifacts/audit_evidence_verification.json).
 
-- changing run length alters the stay gate but not the conditional ranking of
-  switch targets;
-- changing the previous reward surprise alters stay probability while holding
-  the current value state fixed; and
-- changing uncertainty between two non-previous actions affects their
-  conditional switch probabilities independently of perseveration.
+[Response notes](labbook/audit-response-notes.md) preserve the local reply
+drafts. [Post-freeze changes](post_freeze_changes.md) distinguish the audit
+target and final package; no re-audit of the final model is implied.
 
-## 10. Failure conditions and limitations
+## 7. Limitations and next discriminative tests
 
-- Hidden tasks may use different reward scales, numbers of actions,
-  volatility, or participant strategies.
-- A single global parameter set cannot represent all stable individual
-  differences in exploration and perseveration.
-- The fixed random-walk Kalman dynamics may be misspecified when values
-  mean-revert, jump abruptly, or follow structured correlations.
-- Strong public-data run-length effects may not transfer to a task with
-  weaker choice inertia.
-- First-trial prediction is uniform because no participant-specific or
-  task-specific pre-choice evidence is available.
-- Switch-trial NLL is substantially worse than stay-trial NLL.
-- The small uncertainty coefficient limits claims about directed exploration.
-- The adaptive-noise ablation rejects only the tested heuristic; it does not
-  settle whether a better volatility-learning model would generalize.
-- The final all-public score is evaluated on data used for final parameter
-  fitting and is not an unbiased generalization estimate.
+- Fixed random-walk beliefs and an initial reward mean of 50 may transfer poorly
+  to different reward scales, structured dynamics, action counts or tasks.
+- A global coefficient set with local history does not identify stable
+  participant types. State is deliberately not carried between trajectories.
+- The history additions improve this development comparison but are not a
+  mechanism-specific psychological experiment. Fit reward-free history,
+  fixed-learning-rate and feature-ablation controls on independent data before
+  stronger claims.
+- Noise variances are selected offline; the model does not claim to separate
+  volatility and observation noise online.
+- Parameter recovery under misspecification, and recovery for the final
+  thirteen-coefficient specification, remain untested.
+- No response-time prediction or hidden evaluation was performed in this pass.
 
-## 11. Reproducibility and leakage controls
+## 8. Reproducibility and confidentiality
 
-- Agent entry point: `agent.py`.
-- Runtime configuration: `config.yaml`.
-- Frozen parameters and aggregate diagnostics:
-  `artifacts/fitted_params.json`.
-- Offline fitting and subject-disjoint model selection: `fit_public.py`.
-- Sequential public-data evaluation: `evaluate_public.py`.
-- Interface, probability, dynamic-import, missing-reward, and reset tests:
-  `tests/test_agent.py`.
-- Prediction is produced before the current action and reward are supplied to
-  `update()`.
-- Fitting uses public trajectories only and groups the development split by
-  `subject_id`.
-- No optimizer, parameter search, or model-weight update occurs inside
-  `Agent` during evaluation.
-- `reset()` clears all mutable trajectory-local state.
-- The action set is read from `context.available_actions`; it is not hard-coded
-  to four actions.
-- No raw public trajectories are included in the frozen parameter artifact.
-- No hidden evaluation data, source mappings, credentials, or identifying
-  participant information are used.
-
-Reproduction commands from the repository root are:
+Runtime configuration: [config.yaml](config.yaml). Preserved reference:
+[config_baseline.yaml](config_baseline.yaml) and the unchanged
+[checkpoint parameters](artifacts/fitted_params.json). No raw trajectories,
+hidden scores, private source mappings or credentials are included in the
+parameter/report artifacts.
 
 ```powershell
 python -m pip install -r requirements.txt
 python -m unittest discover -s tests -v
 python evaluate_public.py
+python evaluate_public.py --config config_baseline.yaml
 ```
 
-Offline refitting additionally requires:
+The six offline numerical tests require the fitting dependencies; without
+them they are explicitly skipped. Full development reproduction writes new
+outputs rather than replacing the deployed parameters:
 
 ```powershell
 python -m pip install -r requirements-fit.txt
-python fit_public.py `
-  --process-variance-grid 10,25,50 `
-  --observation-variance-grid 50,100,200
+python -m experiments.final_candidates --workers 4 --refit --output artifacts/reproduced_cv.json --parameter-output artifacts/refitted_candidate.json
 ```
 
-## 12. Confidentiality and reporting
-
-This card reports public-data development evidence only. It contains no hidden
-benchmark result, raw trajectory, source-identifying mapping, credential,
-demographic variable, or original participant identifier.
-
-When citing the numerical results, use language such as:
-
-> Local public-data diagnostic under the recorded fitting procedure; not an
-> official hidden-evaluation score.
+The [historical labbook](labbook/historical-development.md) retains earlier
+negative results with provenance limitations. [The final checklist](FINAL_SUBMISSION_CHECKLIST.md)
+covers team review, exact commit pinning, audit replies and formal intake.

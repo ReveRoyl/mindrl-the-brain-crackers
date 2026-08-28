@@ -1,0 +1,56 @@
+{
+  "data_sha256": "2a37588cfcbbc7e10df6b1eff22a23ed29a15bef490c18ed36811e27090f4230",
+  "development_report": "artifacts/final_development_cv.json",
+  "final_public_fit_metrics": {
+    "accuracy": 0.7988830917270682,
+    "first_trials": 2678,
+    "nll": 0.5601038382882827,
+    "stay_nll": 0.17833333720989303,
+    "stay_trials": 239937,
+    "switch_gate_nll": 0.7578202792425727,
+    "switch_nll": 1.7140227758355955,
+    "switch_target_nll": 0.9562024965930231,
+    "switch_trials": 77465,
+    "trials": 320080
+  },
+  "fit_attempts": [
+    {
+      "iterations": 170,
+      "message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH",
+      "objective": 0.5531969884623271,
+      "seconds": 57.78099999999995,
+      "success": true
+    },
+    {
+      "iterations": 165,
+      "message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH",
+      "objective": 0.5531969885588647,
+      "seconds": 57.1880000000001,
+      "success": true
+    }
+  ],
+  "fit_seed": 20260827,
+  "model_name": "history_stay_switch_kalman",
+  "parameters": {
+    "frequency_weight": 0.16748833097164326,
+    "initial_value": 50.0,
+    "initial_variance": 400.0,
+    "lapse": 0.014358469071156985,
+    "observation_variance": 100.0,
+    "persistence_trace_weight": 0.5018210063352021,
+    "process_variance": 25.0,
+    "recency_weight": 0.08978223626734126,
+    "run_length_weight": 1.129567257947162,
+    "stay_intercept": -0.052226392608549055,
+    "stay_value_weight": 1.6407790278323333,
+    "surprise_linear_weight": 0.9151796460478671,
+    "surprise_quadratic_weight": -0.7288612880918566,
+    "surprise_trace_weight": 0.8711075476927398,
+    "trial_index_weight": 0.07903077835957752,
+    "uncertainty_sensitivity": 1.0001373040790478,
+    "value_sensitivity": 1.0867622254107172,
+    "variance_ceiling": 10000.0
+  },
+  "schema_version": 1,
+  "selected_candidate": "history_r100"
+}

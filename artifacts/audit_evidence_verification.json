@@ -1,0 +1,100 @@
+{
+  "verified_on": "2026-08-27",
+  "audit_evidence_commit": "b99c7a72a4d50c6dfdf61afb1f9102b0617d537c",
+  "frozen_model_commit": "1f1899f80c65ad2523f153a8eacfd51eeccc449d",
+  "scope": "Independent arithmetic recheck of auditor-supplied generating values and fitted estimates; simulations and 800 fits NOT regenerated.",
+  "manifest_git_blob_sha": "6b344c7d7fdbf31f458730581f2ff7b8c0ab6992",
+  "generating_parameters_git_blob_sha": "0426ea5d11bd819232570515b50b12e5d800118c",
+  "status_counts": {
+    "completed": 99,
+    "completed_with_warnings": 1
+  },
+  "subjects_per_dataset": [
+    98
+  ],
+  "trials_per_dataset": [
+    11957
+  ],
+  "trajectories_per_dataset": [
+    100
+  ],
+  "recovery": [
+    {
+      "parameter": "value_sensitivity",
+      "n": 100,
+      "pearson_r": 0.9934797855216206,
+      "mse": 0.008873086520275422,
+      "max_generating_value_mismatch": 0
+    },
+    {
+      "parameter": "uncertainty_sensitivity",
+      "n": 100,
+      "pearson_r": 0.984404704669523,
+      "mse": 0.011664936895764713,
+      "max_generating_value_mismatch": 0
+    },
+    {
+      "parameter": "stay_intercept",
+      "n": 100,
+      "pearson_r": 0.9744571593376794,
+      "mse": 0.03845952711701091,
+      "max_generating_value_mismatch": 0
+    },
+    {
+      "parameter": "stay_value_weight",
+      "n": 100,
+      "pearson_r": 0.9884090378850148,
+      "mse": 0.012390007253706044,
+      "max_generating_value_mismatch": 0
+    },
+    {
+      "parameter": "surprise_linear_weight",
+      "n": 100,
+      "pearson_r": 0.9919829376382493,
+      "mse": 0.02138811745090668,
+      "max_generating_value_mismatch": 0
+    },
+    {
+      "parameter": "surprise_quadratic_weight",
+      "n": 100,
+      "pearson_r": 0.9877943655436235,
+      "mse": 0.032686037347201824,
+      "max_generating_value_mismatch": 0
+    },
+    {
+      "parameter": "run_length_weight",
+      "n": 100,
+      "pearson_r": 0.953998001623275,
+      "mse": 0.01864860272969104,
+      "max_generating_value_mismatch": 0
+    },
+    {
+      "parameter": "trial_index_weight",
+      "n": 100,
+      "pearson_r": 0.9904290439603685,
+      "mse": 0.0026512691664525856,
+      "max_generating_value_mismatch": 0
+    },
+    {
+      "parameter": "lapse",
+      "n": 100,
+      "pearson_r": 0.812684720594474,
+      "mse": 0.0004048821190486387,
+      "max_generating_value_mismatch": 0
+    }
+  ],
+  "q6_reported_comparison": {
+    "matched_single_softmax": {
+      "final_public_accuracy": 0,
+      "final_public_nll": -4.917725116015959e-10,
+      "validation_accuracy": 0,
+      "validation_nll": -2.864606329922026e-10
+    },
+    "shared_rule_softmax": {
+      "final_public_accuracy": -0.004144276430892324,
+      "final_public_nll": 0.07577166205486019,
+      "validation_accuracy": -0.004840864440078585,
+      "validation_nll": 0.07557149499841087
+    }
+  }
+}

@@ -79,8 +79,8 @@ class ActionBelief:
         self.variance = float(variance)
 
 
-class Agent:
-    """Two-stage cognitive model for stay/switch and switch-target decisions."""
+class KalmanAgent:
+    """Fixed-noise Kalman model with a factored dynamic repeat policy."""
 
     _FITTED_PARAMETER_NAMES = {
         "initial_value",
@@ -377,3 +377,103 @@ class Agent:
                 belief.variance + self.process_variance,
                 self.variance_ceiling,
             )
+
+
+HISTORY_PARAMETER_NAMES = (
+    "persistence_trace_weight",
+    "surprise_trace_weight",
+    "frequency_weight",
+    "recency_weight",
+)
+
+
+class Agent(KalmanAgent):
+    """Kalman policy augmented by causal, trajectory-local history features.
+
+    Zero history coefficients reproduce the original nine-parameter policy.
+    All coefficients remain fixed during evaluation; only history state updates.
+    """
+
+    _FITTED_PARAMETER_NAMES = (
+        KalmanAgent._FITTED_PARAMETER_NAMES | set(HISTORY_PARAMETER_NAMES)
+    )
+
+    def __init__(self, config: Mapping[str, Any] | Any | None = None) -> None:
+        super().__init__(config)
+        model = get_field(config or {}, "model", {}) or {}
+        fitted = self._load_fitted_parameters(
+            get_field(model, "fitted_params_path", None)
+        )
+        for name in HISTORY_PARAMETER_NAMES:
+            value = float(fitted.get(name, get_field(model, name, 0.0)))
+            if not isfinite(value):
+                raise ValueError(f"History coefficient {name!r} must be finite")
+            setattr(self, name, value)
+
+    def reset(self, context: Mapping[str, Any] | Any) -> None:
+        """Clear every history accumulator together with the Kalman beliefs."""
+        super().reset(context)
+        self.choice_counts = dict.fromkeys(self.actions, 0)
+        self.last_choice_times = dict.fromkeys(self.actions, 0)
+        self.past_stays = 0
+        self.past_switches = 0
+        self.surprise_trace = 0.0
+
+    def history_features(
+        self,
+    ) -> tuple[float, float, dict[Any, float], dict[Any, float]]:
+        """Return pre-choice persistence, surprise, frequency and recency."""
+        frequency = {a: log1p(self.choice_counts[a]) for a in self.actions}
+        recency = {
+            a: -log1p(self.trial_count - self.last_choice_times[a])
+            for a in self.actions
+        }
+        mean_frequency = sum(frequency.values()) / len(self.actions)
+        mean_recency = sum(recency.values()) / len(self.actions)
+        return (
+            log((self.past_stays + 2.0) / (self.past_switches + 2.0)),
+            self.surprise_trace,
+            {a: frequency[a] - mean_frequency for a in self.actions},
+            {a: recency[a] - mean_recency for a in self.actions},
+        )
+
+    def _action_utilities(self) -> dict[Any, float]:
+        utilities = super()._action_utilities()
+        _, _, frequency, recency = self.history_features()
+        return {
+            a: utilities[a]
+            + self.frequency_weight * frequency[a]
+            + self.recency_weight * recency[a]
+            for a in self.actions
+        }
+
+    def _stay_probability(self, base_probabilities: Mapping[Any, float]) -> float:
+        probability = clip(
+            base_probabilities[self.last_action], 1e-9, 1.0 - 1e-9
+        )
+        persistence, trace, _, _ = self.history_features()
+        logit = (
+            self.stay_intercept
+            + self.stay_value_weight * log(probability / (1.0 - probability))
+            + self.surprise_linear_weight * self.last_surprise
+            + self.surprise_quadratic_weight * self.last_surprise**2
+            + self.run_length_weight * log1p(self.run_length)
+            + self.trial_index_weight * log1p(self.trial_count)
+            + self.persistence_trace_weight * persistence
+            + self.surprise_trace_weight * trace
+        )
+        return stable_sigmoid(logit)
+
+    def update(self, action: Any, reward: Any, info: Any | None = None) -> None:
+        """Update history only after the current action/reward are revealed."""
+        if action not in self.beliefs:
+            return
+        if self.trial_count:
+            if action == self.last_action:
+                self.past_stays += 1
+            else:
+                self.past_switches += 1
+        super().update(action, reward, info)
+        self.choice_counts[action] += 1
+        self.last_choice_times[action] = self.trial_count
+        self.surprise_trace = 0.8 * self.surprise_trace + 0.2 * self.last_surprise
